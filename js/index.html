@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Page Title</title>
+</head>
+
+<script src="lib/jquery-1.11.2.min.js"></script>
+<script src="lib/underscore-min.js"></script>
+<script src="lib/sdk.min.js"></script>
+<script src="webrtc.js"></script>
+
+<body>
+	<div id="dlgChat" class="ui-widget">
+	
+		<audio id="audRemote"></audio>
+		
+		<p align="center">
+			<span id="status">Waiting to connect to SDK</span> <br/>
+		
+				Destination<br>
+				<input type="text" id="destination" name="destination">
+				<br>
+				Text<br>
+				<textarea type="textarea" id="text" name="text" value="Text" size="10" rows="5"></textarea>
+				<br><br>
+				<button id="send">Send</button>
+			<br><br>
+			<div id="received" align="center">
+			</div>
+		</p>
+		
+	</div>
+
+</body>
+
+</html>
