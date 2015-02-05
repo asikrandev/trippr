@@ -51,7 +51,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
     //---------------------------------------------------------------------
 
     //Image table name
-    private static final String TABLE_IMAGES = "images";
+    private static final String TABLE_IMAGES = "image";
 
     //Images Table Columns name
     private static final String KEY_ID = "id";

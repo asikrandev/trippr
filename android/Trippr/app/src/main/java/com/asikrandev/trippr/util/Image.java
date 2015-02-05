@@ -1,5 +1,7 @@
 package com.asikrandev.trippr.util;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by ricardovegas on 2/4/15.
  */
