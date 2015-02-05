@@ -9,7 +9,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.acision.acisionsdk.AcisionSdk;
+import com.acision.acisionsdk.AcisionSdkCallbacks;
+import com.acision.acisionsdk.AcisionSdkConfiguration;
+import com.acision.acisionsdk.messaging.Messaging;
+import com.acision.acisionsdk.messaging.MessagingReceiveCallbacks;
+import com.acision.acisionsdk.messaging.MessagingReceivedMessage;
+import com.acision.acisionsdk.messaging.MessagingSendOptions;
 import com.asikrandev.trippr.util.Image;
 import com.asikrandev.trippr.util.MySQLiteHelper;
 
@@ -22,6 +30,9 @@ public class MainActivity extends ActionBarActivity {
     private ImageView image;
     private ArrayList<Image> list;
     private int position;
+
+    private AcisionSdk acisionSdk;
+    private Messaging messaging;
 
     private void init(){
 
@@ -46,12 +57,43 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    private void start() {
+        AcisionSdkConfiguration config = new AcisionSdkConfiguration("wvatXmaKZcmM", "jegasmlm_gmail_com_0", "3Ph0jsEHe");
+        config.setPersistent(true);
+        config.setApplicationActivity(this);
+        acisionSdk = new AcisionSdk(config, new AcisionSdkCallbacks() {
+            @Override
+            public void onConnected(AcisionSdk acisionSdk) {
+                TextView editMessage = (TextView) findViewById(R.id.text_display);
+                editMessage.setText("Connected");
+                // Now start the messaging. /
+                messaging = acisionSdk.getMessaging();
+                testMessaging(messaging);
+            }
+        });
+    }
+
+    private void testMessaging(Messaging messaging) {
+        messaging.setCallbacks(new MessagingReceiveCallbacks() {
+            @Override
+            public void onMessageReceived(Messaging messaging, MessagingReceivedMessage data) {
+                Log.d("trippr", data.getContent());
+            }
+        });
+    }
+
+    public void doSend(String message) {
+        messaging.sendToDestination("jegasmlm_gmail_com_1", message, new MessagingSendOptions());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         init();
+
+        start();
 
     }
 
@@ -99,7 +141,14 @@ public class MainActivity extends ActionBarActivity {
     }
 
     // Action Buttons
-    public void next(View view){
+    public void like(View view){
+
+        doSend(list.get(position).getTags());
+        loadNextImage();
+
+    }
+
+    public void dontLike(View view){
 
         loadNextImage();
 
