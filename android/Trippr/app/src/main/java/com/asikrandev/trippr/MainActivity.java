@@ -29,9 +29,9 @@ public class MainActivity extends ActionBarActivity {
 
         // add Images
         db.addImage(new Image(1,"img01","peace peaceful lights night city quiet clubs buildings traffic "));
-        db.addImage(new Image(1,"img03","work peace wood electronic laptop drink alone yellow table write "));
-        db.addImage(new Image(1,"img05","Buildings city landscape colors people metropolis high lakes skyscrapers"));
-        db.addImage(new Image(1,"img08","beach sea pier wood landscape sky beautiful  deep hot sunlight "));
+        db.addImage(new Image(2,"img03","work peace wood electronic laptop drink alone yellow table write "));
+        db.addImage(new Image(3,"img05","Buildings city landscape colors people metropolis high lakes skyscrapers"));
+        db.addImage(new Image(4,"img08","beach sea pier wood landscape sky beautiful  deep hot sunlight "));
 
         // get Images
         List<Image> list = db.getAllImages();
