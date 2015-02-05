@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import com.asikrandev.trippr.util.Image;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -115,8 +116,8 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         return image;
     }
 
-    public List<Image> getAllImages() {
-        List<Image> images = new LinkedList<>();
+    public ArrayList<Image> getAllImages() {
+        ArrayList<Image> images = new ArrayList<>();
 
         // 1. build the query
         String query = "SELECT  * FROM " + TABLE_IMAGES;

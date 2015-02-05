@@ -7,22 +7,27 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.asikrandev.trippr.util.Image;
 import com.asikrandev.trippr.util.MySQLiteHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    private ImageView image;
+    private ArrayList<Image> list;
+    private int position;
 
-        // deleting databases created
+    private void init(){
+
+        position = 0;
+
+        // delete databases created
         //this.deleteDatabase("trippr");
         // creating new database
         MySQLiteHelper db = new MySQLiteHelper(this);
@@ -33,15 +38,20 @@ public class MainActivity extends ActionBarActivity {
         db.addImage(new Image(3,"img05","Buildings city landscape colors people metropolis high lakes skyscrapers"));
         db.addImage(new Image(4,"img08","beach sea pier wood landscape sky beautiful  deep hot sunlight "));
 
-        // get Images
-        List<Image> list = db.getAllImages();
-        Resources res = getResources();
-        //Log.d("trippr","HELLO WORLD!");
-        //Log.d("trippr",list.get(0).getSource());
-        int resID = res.getIdentifier(list.get(0).getSource(), "drawable", getPackageName());
-        Drawable drawable = res.getDrawable(resID );
-        ImageView image = (ImageView) findViewById(R.id.imageView);
-        image.setImageDrawable(drawable);
+        // get Images from database
+        list = db.getAllImages();
+        image = (ImageView) findViewById(R.id.imageView);
+
+        loadImage();
+
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        init();
 
     }
 
@@ -66,5 +76,32 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void loadNextImage(){
+
+        position++;
+        if(position >= list.size())
+            position = 0;
+        loadImage();
+
+    }
+
+    public void loadImage(){
+
+        Resources res = getResources();
+        int resID = res.getIdentifier(list.get(position).getSource(), "drawable", getPackageName());
+        Drawable drawable = res.getDrawable(resID );
+        image = (ImageView) findViewById(R.id.imageView);
+        //send image to the Drawable
+        image.setImageDrawable(drawable);
+
+    }
+
+    // Action Buttons
+    public void next(View view){
+
+        loadNextImage();
+
     }
 }
