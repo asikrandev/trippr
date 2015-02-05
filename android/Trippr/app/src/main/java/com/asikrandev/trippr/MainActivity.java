@@ -2,13 +2,17 @@ package com.asikrandev.trippr;
 
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.acision.acisionsdk.AcisionSdk;
@@ -27,16 +31,26 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
+    private FrameLayout content;
+    private RelativeLayout buttonsLayout;
     private ImageView image;
+    private TextView result;
+    private Button restartButton;
+    private Button yesButton;
+    private Button noButton;
+
     private ArrayList<Image> list;
     private int position;
+    private String tags;
 
     private AcisionSdk acisionSdk;
     private Messaging messaging;
 
+
     private void init(){
 
         position = 0;
+        tags="";
 
         // delete databases created
         this.deleteDatabase("trippr");
@@ -46,13 +60,33 @@ public class MainActivity extends ActionBarActivity {
         // add Images
         db.addImage(new Image(1,"img01","peace peaceful lights night city quiet clubs buildings traffic "));
         db.addImage(new Image(2,"img02","work peace wood electronic laptop drink alone yellow table write "));
-        db.addImage(new Image(3,"img03","Buildings city landscape colors people metropolis high lakes skyscrapers"));
+        db.addImage(new Image(3,"img03","Buildings city landscape colors people metropolis high lakes skyscrapers "));
         db.addImage(new Image(4,"img04","beach sea pier wood landscape sky beautiful  deep hot sunlight "));
         db.addImage(new Image(5,"img05","beach sea pier wood landscape sky beautiful  deep hot sunlight "));
 
         // get Images from database
         list = db.getAllImages();
+
+
+        content = (FrameLayout) findViewById(R.id.content);
+        buttonsLayout = (RelativeLayout) findViewById(R.id.buttons);
         image = (ImageView) findViewById(R.id.imageView);
+        yesButton = (Button) findViewById(R.id.yesButton);
+        noButton = (Button) findViewById(R.id.noButton);
+
+        result = new TextView(this);
+        FrameLayout.LayoutParams tvParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        result.setLayoutParams(tvParams);
+
+        restartButton = new Button(this);
+        RelativeLayout.LayoutParams buttonParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        restartButton.setLayoutParams(buttonParam);
+        restartButton.setText("Restart");
+        restartButton.setOnClickListener( new View.OnClickListener() {
+            public void onClick(View v) {
+                restart();
+            }
+        });
 
         loadImage();
 
@@ -67,6 +101,8 @@ public class MainActivity extends ActionBarActivity {
             public void onConnected(AcisionSdk acisionSdk) {
                 TextView editMessage = (TextView) findViewById(R.id.text_display);
                 editMessage.setText("Connected");
+                yesButton.setEnabled(true);
+                noButton.setEnabled(true);
                 // Now start the messaging. /
                 messaging = acisionSdk.getMessaging();
                 testMessaging(messaging);
@@ -79,6 +115,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onMessageReceived(Messaging messaging, MessagingReceivedMessage data) {
                 Log.d("trippr", data.getContent());
+                result.setText(data.getContent());
             }
         });
     }
@@ -95,14 +132,13 @@ public class MainActivity extends ActionBarActivity {
         init();
 
         start();
-
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -122,36 +158,53 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void loadNextImage(){
-
         position++;
-        if(position >= list.size())
-            position = 0;
-        loadImage();
+        if(position >= list.size()){
+            doSend(tags);
 
+            result.setText("wait...");
+            content.removeView(image);
+            content.addView(result);
+
+            buttonsLayout.removeView(yesButton);
+            buttonsLayout.removeView(noButton);
+            buttonsLayout.addView(restartButton);
+        }
+        else
+            loadImage();
     }
 
     public void loadImage(){
-
+        Log.d("trippr", ""+position);
         Resources res = getResources();
         int resID = res.getIdentifier(list.get(position).getSource(), "drawable", getPackageName());
         Drawable drawable = res.getDrawable(resID );
         image = (ImageView) findViewById(R.id.imageView);
         //send image to the Drawable
         image.setImageDrawable(drawable);
-
     }
 
     // Action Buttons
     public void like(View view){
-
-        doSend(list.get(position).getTags());
+        tags = tags + list.get(position).getTags();
         loadNextImage();
-
     }
 
     public void dontLike(View view){
-
         loadNextImage();
+    }
 
+    public void restart(){
+        position = 0;
+        tags="";
+
+        content.removeView(result);
+        content.addView(image);
+
+        buttonsLayout.removeView(restartButton);
+        buttonsLayout.addView(yesButton);
+        buttonsLayout.addView(noButton);
+
+        loadImage();
     }
 }
