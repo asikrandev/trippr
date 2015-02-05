@@ -121,6 +121,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
 
         // 1. build the query
         String query = "SELECT  * FROM " + TABLE_IMAGES;
+        //String query = "SELECT  * FROM " + TABLE_IMAGES + " ORDER BY RANDOM() LIMIT 10";
 
         // 2. get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
