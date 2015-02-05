@@ -39,15 +39,16 @@ public class MainActivity extends ActionBarActivity {
         position = 0;
 
         // delete databases created
-        //this.deleteDatabase("trippr");
+        this.deleteDatabase("trippr");
         // creating new database
         MySQLiteHelper db = new MySQLiteHelper(this);
 
         // add Images
         db.addImage(new Image(1,"img01","peace peaceful lights night city quiet clubs buildings traffic "));
-        db.addImage(new Image(2,"img03","work peace wood electronic laptop drink alone yellow table write "));
-        db.addImage(new Image(3,"img05","Buildings city landscape colors people metropolis high lakes skyscrapers"));
-        db.addImage(new Image(4,"img08","beach sea pier wood landscape sky beautiful  deep hot sunlight "));
+        db.addImage(new Image(2,"img02","work peace wood electronic laptop drink alone yellow table write "));
+        db.addImage(new Image(3,"img03","Buildings city landscape colors people metropolis high lakes skyscrapers"));
+        db.addImage(new Image(4,"img04","beach sea pier wood landscape sky beautiful  deep hot sunlight "));
+        db.addImage(new Image(5,"img05","beach sea pier wood landscape sky beautiful  deep hot sunlight "));
 
         // get Images from database
         list = db.getAllImages();
@@ -101,7 +102,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
