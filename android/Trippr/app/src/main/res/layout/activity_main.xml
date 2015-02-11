@@ -17,14 +17,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/content">
-
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:id="@+id/imageView"
-            android:src="@drawable/img01"/>
+            android:src="@drawable/img01">
+        </ImageView>
 
     </FrameLayout>
+    <android.support.v4.view.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
