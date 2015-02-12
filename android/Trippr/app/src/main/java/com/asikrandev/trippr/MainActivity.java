@@ -8,8 +8,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -38,6 +40,8 @@ import java.util.Random;
 
 public class MainActivity extends ActionBarActivity {
 
+    private static final int SWIPE_MIN_DISTANCE = 120;
+
     private FrameLayout content;
     private RelativeLayout buttonsLayout;
     private ImageView image;
@@ -47,17 +51,19 @@ public class MainActivity extends ActionBarActivity {
     private Button noButton;
 
     private ArrayList<Image> list, allImages;
+    private ArrayList<String> like, destination;
     private int position;
-    private String tags;
 
     private AcisionSdk acisionSdk;
     private Messaging messaging;
 
+    ViewPager.OnTouchListener gestureListener;
 
     private void init(){
 
         position = 0;
-        tags="";
+        like = new ArrayList<String>();
+        destination = new ArrayList<String>();
 
         // delete databases created
         this.deleteDatabase("trippr");
@@ -139,7 +145,7 @@ public class MainActivity extends ActionBarActivity {
         });
 
 
-        loadImage();
+        loadImage(image, list.get(position).getSource());
 
     }
 
@@ -165,8 +171,8 @@ public class MainActivity extends ActionBarActivity {
         messaging.setCallbacks(new MessagingReceiveCallbacks() {
             @Override
             public void onMessageReceived(Messaging messaging, MessagingReceivedMessage data) {
-                Log.d("trippr", data.getContent());
                 result.setText(data.getContent());
+                destination.add(data.getContent());
             }
         });
     }
@@ -184,21 +190,53 @@ public class MainActivity extends ActionBarActivity {
 
         start();
 
+        // Gesture detection
+        gestureListener = new ViewPager.OnTouchListener() {
+            float downX, upX;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                float x = event.getX();
+
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        downX = x;
+                    }
+                    break;
+                    case MotionEvent.ACTION_UP:{
+
+                        upX = event.getX();
+                        final float deltaX = downX - upX;
+
+                        if (deltaX > 0 && deltaX > SWIPE_MIN_DISTANCE) {
+
+                            Log.d("trippr", "SWIPING RIGHT");
+
+                        }
+                        if (deltaX < 0 && -deltaX > SWIPE_MIN_DISTANCE) {
+
+                            Log.d("trippr", "SWIPING LEFT");
+
+                        }
+                    }
+                    break;
+                }
+                return false;
+            }
+        };
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         ImagePagerAdapter adapter = new ImagePagerAdapter();
         viewPager.setAdapter(adapter);
+
+        viewPager.setOnTouchListener(gestureListener);
     }
 
     private class ImagePagerAdapter extends PagerAdapter {
-        private int[] mImages = new int[] {
-            R.drawable.img01,
-            R.drawable.img02
-        };
 
         @Override
         public int getCount() {
-            return mImages.length;
+            return list.size();
         }
 
         @Override
@@ -207,14 +245,16 @@ public class MainActivity extends ActionBarActivity {
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
+        public Object instantiateItem(ViewGroup container, int swipe) {
             Context context = MainActivity.this;
             ImageView imageView = new ImageView(context);
             int padding = context.getResources().getDimensionPixelSize(
                     R.dimen.padding_medium);
             imageView.setPadding(padding, padding, padding, padding);
             imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-            imageView.setImageResource(mImages[position]);
+
+            loadImage(imageView, list.get(swipe).getSource());
+
             ((ViewPager) container).addView(imageView, 0);
             return imageView;
         }
@@ -224,7 +264,6 @@ public class MainActivity extends ActionBarActivity {
             ((ViewPager) container).removeView((ImageView) object);
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -251,7 +290,9 @@ public class MainActivity extends ActionBarActivity {
     public void loadNextImage(){
         position++;
         if(position >= list.size()){
-            doSend(tags);
+            String query = getQuery();
+
+            doSend(query);
 
             result.setText("wait...");
             content.removeView(image);
@@ -262,22 +303,20 @@ public class MainActivity extends ActionBarActivity {
             buttonsLayout.addView(restartButton);
         }
         else
-            loadImage();
+            loadImage(image, list.get(position).getSource());
     }
 
-    public void loadImage(){
-        Log.d("trippr", ""+position);
+    public void loadImage(ImageView image, String name){
         Resources res = getResources();
-        int resID = res.getIdentifier(list.get(position).getSource(), "drawable", getPackageName());
+        int resID = res.getIdentifier(name, "drawable", getPackageName());
         Drawable drawable = res.getDrawable(resID );
-        image = (ImageView) findViewById(R.id.imageView);
         //send image to the Drawable
         image.setImageDrawable(drawable);
     }
 
     // Action Buttons
     public void like(View view){
-        tags = tags + list.get(position).getTags();
+        like.add(list.get(position).getTags());
         loadNextImage();
     }
 
@@ -294,7 +333,7 @@ public class MainActivity extends ActionBarActivity {
         list =  new ArrayList<Image>(subSet.subList(0,10));
 
         position = 0;
-        tags="";
+        like.clear();
 
         content.removeView(result);
         content.addView(image);
@@ -303,6 +342,24 @@ public class MainActivity extends ActionBarActivity {
         buttonsLayout.addView(yesButton);
         buttonsLayout.addView(noButton);
 
-        loadImage();
+        loadImage(image, list.get(position).getSource());
+    }
+
+    public String getQuery(){
+        String query = "{\"text\":\"";
+        int i;
+        for(i=0; i<like.size(); i++) {
+            query = query + like.get(i) + " ";
+        }
+        query = query + "\", \"excluded\":[";
+        if(destination.size()>0){
+            query = query + "\"" + destination.get(0) + "\"";
+        }
+        for(i=1; i<destination.size(); i++) {
+            query = query + ",\"" + destination.get(i) + "\"";
+        }
+        query = query + "]}";
+
+        return query;
     }
 }
