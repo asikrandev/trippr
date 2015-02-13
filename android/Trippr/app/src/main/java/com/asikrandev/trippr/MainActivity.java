@@ -2,6 +2,8 @@ package com.asikrandev.trippr;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -30,6 +32,7 @@ import com.acision.acisionsdk.messaging.MessagingReceivedMessage;
 import com.acision.acisionsdk.messaging.MessagingSendOptions;
 import com.asikrandev.trippr.util.Image;
 import com.asikrandev.trippr.util.MySQLiteHelper;
+import com.asikrandev.trippr.util.TripprSwipe;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,6 +46,7 @@ public class MainActivity extends ActionBarActivity {
     private static final int SWIPE_MIN_DISTANCE = 120;
 
     private FrameLayout content;
+    private FrameLayout swipeContent;
     private RelativeLayout buttonsLayout;
     private ImageView image;
     private TextView result;
@@ -59,9 +63,10 @@ public class MainActivity extends ActionBarActivity {
 
     ViewPager.OnTouchListener gestureListener;
 
+    TripprSwipe swipe;
+
     private void init(){
 
-        position = 0;
         like = new ArrayList<String>();
         destination = new ArrayList<String>();
 
@@ -124,11 +129,41 @@ public class MainActivity extends ActionBarActivity {
 
         list =  new ArrayList<Image>(subSet.subList(0,10));
 
-        content = (FrameLayout) findViewById(R.id.content);
+        swipeContent = (FrameLayout) findViewById(R.id.tripper_swipe);
+
         buttonsLayout = (RelativeLayout) findViewById(R.id.buttons);
-        image = (ImageView) findViewById(R.id.imageView);
+
         yesButton = (Button) findViewById(R.id.yesButton);
         noButton = (Button) findViewById(R.id.noButton);
+
+        swipe = new TripprSwipe(this, getBitmapList());
+        swipe.setOnSwipeListener(new TripprSwipe.onSwipeListener() {
+            @Override
+            public void onLike(int position) {
+                like.add(list.get(position).getTags());
+            }
+
+            @Override
+            public void onFinished() {
+                String query = getQuery();
+
+                Log.d("trippr", query);
+
+                doSend(query);
+
+                result.setText("wait...");
+                swipeContent.removeView(swipe);
+                swipeContent.addView(result);
+
+                buttonsLayout.removeView(yesButton);
+                buttonsLayout.removeView(noButton);
+                buttonsLayout.addView(restartButton);
+            }
+        });
+
+        FrameLayout.LayoutParams swipeParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        swipe.setLayoutParams(swipeParams);
+        swipeContent.addView(swipe);
 
         result = new TextView(this);
         FrameLayout.LayoutParams tvParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
@@ -143,9 +178,6 @@ public class MainActivity extends ActionBarActivity {
                 restart();
             }
         });
-
-
-        loadImage(image, list.get(position).getSource());
 
     }
 
@@ -189,80 +221,6 @@ public class MainActivity extends ActionBarActivity {
         init();
 
         start();
-
-        // Gesture detection
-        gestureListener = new ViewPager.OnTouchListener() {
-            float downX, upX;
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                float x = event.getX();
-
-                switch(event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
-                        downX = x;
-                    }
-                    break;
-                    case MotionEvent.ACTION_UP:{
-
-                        upX = event.getX();
-                        final float deltaX = downX - upX;
-
-                        if (deltaX > 0 && deltaX > SWIPE_MIN_DISTANCE) {
-
-                            Log.d("trippr", "SWIPING RIGHT");
-
-                        }
-                        if (deltaX < 0 && -deltaX > SWIPE_MIN_DISTANCE) {
-
-                            Log.d("trippr", "SWIPING LEFT");
-
-                        }
-                    }
-                    break;
-                }
-                return false;
-            }
-        };
-
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        ImagePagerAdapter adapter = new ImagePagerAdapter();
-        viewPager.setAdapter(adapter);
-
-        viewPager.setOnTouchListener(gestureListener);
-    }
-
-    private class ImagePagerAdapter extends PagerAdapter {
-
-        @Override
-        public int getCount() {
-            return list.size();
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
-            return view == ((ImageView) object);
-        }
-
-        @Override
-        public Object instantiateItem(ViewGroup container, int swipe) {
-            Context context = MainActivity.this;
-            ImageView imageView = new ImageView(context);
-            int padding = context.getResources().getDimensionPixelSize(
-                    R.dimen.padding_medium);
-            imageView.setPadding(padding, padding, padding, padding);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-
-            loadImage(imageView, list.get(swipe).getSource());
-
-            ((ViewPager) container).addView(imageView, 0);
-            return imageView;
-        }
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            ((ViewPager) container).removeView((ImageView) object);
-        }
     }
 
     @Override
@@ -287,41 +245,32 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void loadNextImage(){
-        position++;
-        if(position >= list.size()){
-            String query = getQuery();
+    public ArrayList<Bitmap> getBitmapList(){
+        ArrayList<Bitmap> bitmapList = new ArrayList<Bitmap>();
 
-            doSend(query);
+        for(int i = 0; i < list.size(); i++){
+            Resources res = getResources();
+            int resID = res.getIdentifier(list.get(i).getSource(), "drawable", getPackageName());
 
-            result.setText("wait...");
-            content.removeView(image);
-            content.addView(result);
+            /*final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 8;*/
 
-            buttonsLayout.removeView(yesButton);
-            buttonsLayout.removeView(noButton);
-            buttonsLayout.addView(restartButton);
+            Bitmap bm = BitmapFactory.decodeResource(getResources(), resID);
+
+            bitmapList.add(bm);
         }
-        else
-            loadImage(image, list.get(position).getSource());
-    }
 
-    public void loadImage(ImageView image, String name){
-        Resources res = getResources();
-        int resID = res.getIdentifier(name, "drawable", getPackageName());
-        Drawable drawable = res.getDrawable(resID );
-        //send image to the Drawable
-        image.setImageDrawable(drawable);
+        return bitmapList;
     }
 
     // Action Buttons
     public void like(View view){
-        like.add(list.get(position).getTags());
-        loadNextImage();
+        swipe.like();
+        swipe.next();
     }
 
     public void dontLike(View view){
-        loadNextImage();
+        swipe.next();
     }
 
     public void restart(){
@@ -332,17 +281,18 @@ public class MainActivity extends ActionBarActivity {
 
         list =  new ArrayList<Image>(subSet.subList(0,10));
 
-        position = 0;
         like.clear();
 
-        content.removeView(result);
-        content.addView(image);
+        swipe.recycle();
+        swipe.loadNewBitmapList(getBitmapList());
+        swipe.restart();
+
+        swipeContent.removeView(result);
+        swipeContent.addView(swipe);
 
         buttonsLayout.removeView(restartButton);
         buttonsLayout.addView(yesButton);
         buttonsLayout.addView(noButton);
-
-        loadImage(image, list.get(position).getSource());
     }
 
     public String getQuery(){
