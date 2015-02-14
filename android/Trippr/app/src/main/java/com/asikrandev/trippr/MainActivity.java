@@ -11,6 +11,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -48,9 +50,9 @@ public class MainActivity extends ActionBarActivity {
     private LinearLayout buttonsLayout;
     private ImageView image;
     private TextView result;
-    private Button restartButton;
-    private Button yesButton;
-    private Button noButton;
+    private ImageButton restartButton;
+    private ImageButton yesButton;
+    private ImageButton noButton;
 
     private ArrayList<Image> list, allImages;
     private ArrayList<String> like, destination;
@@ -131,10 +133,11 @@ public class MainActivity extends ActionBarActivity {
 
         buttonsLayout = (LinearLayout) findViewById(R.id.buttons);
 
-        yesButton = (Button) findViewById(R.id.yesButton);
-        noButton = (Button) findViewById(R.id.noButton);
+        yesButton = (ImageButton) findViewById(R.id.yesButton);
+        noButton = (ImageButton) findViewById(R.id.noButton);
 
-        swipe = new TripprSwipe(this, getBitmapList());
+        swipe = new TripprSwipe(this, getBitmapList(), false);
+        swipe.setFit(true);
         swipe.setOnSwipeListener(new TripprSwipe.onSwipeListener() {
             @Override
             public void onLike(int position) {
@@ -160,17 +163,23 @@ public class MainActivity extends ActionBarActivity {
         });
 
         FrameLayout.LayoutParams swipeParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+        swipeParams.gravity = Gravity.CENTER;
         swipe.setLayoutParams(swipeParams);
         swipeContent.addView(swipe);
 
         result = new TextView(this);
         FrameLayout.LayoutParams tvParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        tvParams.gravity = Gravity.CENTER;
         result.setLayoutParams(tvParams);
+        result.setTextSize(50);
+        result.setTextColor(getResources().getColor(R.color.lightgray));
 
-        restartButton = new Button(this);
-        LinearLayout.LayoutParams buttonParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        restartButton = new ImageButton(this);
+        LinearLayout.LayoutParams buttonParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        buttonParam.gravity = Gravity.CENTER_HORIZONTAL;
         restartButton.setLayoutParams(buttonParam);
-        restartButton.setText("Restart");
+        restartButton.setImageResource(R.drawable.restart);
+        restartButton.setBackgroundResource(R.drawable.button_selector);
         restartButton.setOnClickListener( new View.OnClickListener() {
             public void onClick(View v) {
                 restart();
@@ -288,8 +297,8 @@ public class MainActivity extends ActionBarActivity {
         swipeContent.addView(swipe);
 
         buttonsLayout.removeView(restartButton);
-        buttonsLayout.addView(yesButton);
         buttonsLayout.addView(noButton);
+        buttonsLayout.addView(yesButton);
     }
 
     public String getQuery(){

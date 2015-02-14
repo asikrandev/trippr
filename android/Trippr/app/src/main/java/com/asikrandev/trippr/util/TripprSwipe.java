@@ -34,6 +34,7 @@ public class TripprSwipe extends View {
     private float aspectRatio;
     private int item;
     private boolean fit;
+    private boolean square;
 
     private onSwipeListener swipeListener;
 
@@ -63,18 +64,19 @@ public class TripprSwipe extends View {
 
         nextPaint.setAlpha(0);
 
-        fit = true;
+        fit = false;
     }
 
     public TripprSwipe(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public TripprSwipe(Context context, ArrayList<Bitmap> list) {
+    public TripprSwipe(Context context, ArrayList<Bitmap> list, boolean square) {
         super(context);
 
         this.context = context;
         this.list  = list;
+        this.square = square;
 
         init();
     }
@@ -100,8 +102,8 @@ public class TripprSwipe extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
-        int desiredWidth = 100;
-        int desiredHeight = 100;
+        int desiredWidth = minW;
+        int desiredHeight = minH;
 
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
@@ -115,33 +117,32 @@ public class TripprSwipe extends View {
         if (widthMode == MeasureSpec.EXACTLY) {
             //Must be this size
             width = widthSize;
-            Log.d("trippr", "width EXACTLY: " + + width);
         } else if (widthMode == MeasureSpec.AT_MOST) {
             //Can't be bigger than...
             width = Math.min(desiredWidth, widthSize);
-            Log.d("trippr", "width AT_MOST: " + width);
         } else {
             //Be whatever you want
             width = desiredWidth;
-            Log.d("trippr", "width: " + width);
         }
 
         //Measure Height
         if (heightMode == MeasureSpec.EXACTLY) {
             //Must be this size
             height = heightSize;
-            Log.d("trippr", "height EXACTLY: " + height);
         } else if (heightMode == MeasureSpec.AT_MOST) {
             //Can't be bigger than...
             height = Math.min(desiredHeight, heightSize);
-            Log.d("trippr", "height AT_MOST: " + height);
         } else {
             //Be whatever you want
             height = desiredHeight;
-            Log.d("trippr", "height: " + height);
         }
 
-        setMeasuredDimension(width, width);
+        if(square) {
+            int size = Math.min(width, height);
+            setMeasuredDimension(size, size);
+        }else {
+            setMeasuredDimension(width, height);
+        }
     }
 
     @Override
@@ -176,10 +177,17 @@ public class TripprSwipe extends View {
                 bottom = getHeight();
             }
         }else {
-            left = pos + (getWidth() / 2 - ((w * getHeight()) / (2 * h))) + getWidth() * op;
-            top = 0;
-            right = left + (w * getHeight() / h);
-            bottom = getHeight();
+            if (w > h) {
+                left = pos + getWidth() * op;
+                top = (getHeight() / 2) - ((h * getWidth()) / (2 * w));
+                right = left + getWidth();
+                bottom = top + (h * getWidth() / w);
+            } else {
+                left = pos + (getWidth() / 2 - ((w * getHeight()) / (2 * h))) + getWidth() * op;
+                top = 0;
+                right = left + (w * getHeight() / h);
+                bottom = getHeight();
+            }
         }
 
         return new RectF(left, top, right, bottom);
@@ -225,6 +233,11 @@ public class TripprSwipe extends View {
             nextPaint.setAlpha(0);
 
         }
+    }
+
+    public void setFit(boolean fit){
+        this.fit = fit;
+        invalidate();
     }
 
     public float getPos(){

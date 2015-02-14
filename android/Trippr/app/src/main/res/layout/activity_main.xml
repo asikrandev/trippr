@@ -1,54 +1,56 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical"
+    android:background="@color/darkgray">
 
-    <LinearLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_display"
+        android:text="Wait - connecting..."
+        android:textColor="@color/lightgray"
+        android:layout_gravity="center"
+        />
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/tripper_swipe">
 
-        <TextView
-            android:layout_width="wrap_content"
+    </FrameLayout>
+
+     <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         android:gravity="center_horizontal"
+         android:id="@+id/buttons">
+
+         <ImageButton
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_weight="1"
+             android:src="@drawable/no"
+             android:background="@drawable/button_selector"
+             android:padding="10dp"
+             android:id="@+id/noButton"
+             android:enabled="false"
+             android:onClick="dontLike"/>
+
+        <ImageButton
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/text_display"
-            android:text="Wait - connecting..."
-            android:layout_gravity="center"
-            />
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/tripper_swipe">
-
-        </FrameLayout>
-
-         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/buttons">
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Yes!"
-                android:enabled="false"
-                android:id="@+id/yesButton"
-                android:onClick="like"/>
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="No!"
-                android:id="@+id/noButton"
-                android:enabled="false"
-                android:onClick="dontLike"/>
-
-        </LinearLayout>
+            android:layout_weight="1"
+            android:src="@drawable/check"
+            android:background="@drawable/button_selector"
+            android:padding="10dp"
+            android:enabled="false"
+            android:id="@+id/yesButton"
+            android:onClick="like"/>
 
     </LinearLayout>
-</ScrollView>
+
+</LinearLayout>
