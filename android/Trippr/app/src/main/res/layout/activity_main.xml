@@ -1,56 +1,68 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/darkgray">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/text_display"
-        android:text="Wait - connecting..."
-        android:textColor="@color/lightgray"
-        android:layout_gravity="center"
-        />
+    android:background="@color/darkergray">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:id="@+id/tripper_swipe">
 
     </FrameLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_display"
+        android:text="Wait - connecting..."
+        android:textColor="@color/white"
+        android:background="@color/darkgraya"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal"
+        android:padding="10dp"
+        />
 
      <LinearLayout
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:orientation="horizontal"
          android:gravity="center_horizontal"
+         android:layout_alignParentBottom="true"
          android:id="@+id/buttons">
 
          <ImageButton
              android:layout_width="0dp"
-             android:layout_height="wrap_content"
+             android:layout_height="40dp"
              android:layout_weight="1"
              android:src="@drawable/no"
              android:background="@drawable/button_selector"
              android:padding="10dp"
+             android:layout_marginLeft="2dp"
+             android:layout_marginTop="2dp"
+             android:layout_marginRight="1dp"
+             android:layout_marginBottom="2dp"
              android:id="@+id/noButton"
              android:enabled="false"
              android:onClick="dontLike"/>
 
         <ImageButton
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:src="@drawable/check"
             android:background="@drawable/button_selector"
             android:padding="10dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginBottom="2dp"
             android:enabled="false"
             android:id="@+id/yesButton"
             android:onClick="like"/>
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

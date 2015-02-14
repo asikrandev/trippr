@@ -148,8 +148,6 @@ public class MainActivity extends ActionBarActivity {
             public void onFinished() {
                 String query = getQuery();
 
-                Log.d("trippr", query);
-
                 doSend(query);
 
                 result.setText("wait...");
@@ -177,9 +175,11 @@ public class MainActivity extends ActionBarActivity {
         restartButton = new ImageButton(this);
         LinearLayout.LayoutParams buttonParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         buttonParam.gravity = Gravity.CENTER_HORIZONTAL;
+        buttonParam.setMargins(2, 2, 2, 2);
         restartButton.setLayoutParams(buttonParam);
         restartButton.setImageResource(R.drawable.restart);
         restartButton.setBackgroundResource(R.drawable.button_selector);
+        restartButton.setPadding(10, 10, 10, 10);
         restartButton.setOnClickListener( new View.OnClickListener() {
             public void onClick(View v) {
                 restart();

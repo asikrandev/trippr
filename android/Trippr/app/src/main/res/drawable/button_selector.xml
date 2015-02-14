@@ -14,7 +14,7 @@
         android:state_focused="true"
         android:state_pressed="false"/>
     <item
-        android:drawable="@color/darkgray"
+        android:drawable="@color/darkgraya"
         android:state_focused="false"
         android:state_pressed="false"/>
 </selector>
