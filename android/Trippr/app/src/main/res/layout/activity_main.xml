@@ -1,67 +1,54 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
-        android:orientation="vertical"
-        tools:context=".MainActivity">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/text_display"
             android:text="Wait - connecting..."
+            android:layout_gravity="center"
             />
-
-        <!-- <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/content">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:id="@+id/imageView"
-                android:src="@drawable/img01">
-            </ImageView>
-
-        </FrameLayout> -->
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/tripper_swipe">
 
         </FrameLayout>
 
-         <RelativeLayout
-            android:layout_width="wrap_content"
+         <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:id="@+id/buttons">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="Yes!"
                 android:enabled="false"
                 android:id="@+id/yesButton"
-                android:layout_alignParentRight="true"
                 android:onClick="like"/>
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="No!"
                 android:id="@+id/noButton"
                 android:enabled="false"
-                android:layout_alignParentLeft="true"
                 android:onClick="dontLike"/>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

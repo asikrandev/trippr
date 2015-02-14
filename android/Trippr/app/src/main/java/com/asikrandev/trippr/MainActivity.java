@@ -43,11 +43,9 @@ import java.util.Random;
 
 public class MainActivity extends ActionBarActivity {
 
-    private static final int SWIPE_MIN_DISTANCE = 120;
-
     private FrameLayout content;
     private FrameLayout swipeContent;
-    private RelativeLayout buttonsLayout;
+    private LinearLayout buttonsLayout;
     private ImageView image;
     private TextView result;
     private Button restartButton;
@@ -131,7 +129,7 @@ public class MainActivity extends ActionBarActivity {
 
         swipeContent = (FrameLayout) findViewById(R.id.tripper_swipe);
 
-        buttonsLayout = (RelativeLayout) findViewById(R.id.buttons);
+        buttonsLayout = (LinearLayout) findViewById(R.id.buttons);
 
         yesButton = (Button) findViewById(R.id.yesButton);
         noButton = (Button) findViewById(R.id.noButton);
@@ -161,7 +159,7 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        FrameLayout.LayoutParams swipeParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        FrameLayout.LayoutParams swipeParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         swipe.setLayoutParams(swipeParams);
         swipeContent.addView(swipe);
 
@@ -170,7 +168,7 @@ public class MainActivity extends ActionBarActivity {
         result.setLayoutParams(tvParams);
 
         restartButton = new Button(this);
-        RelativeLayout.LayoutParams buttonParam = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams buttonParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         restartButton.setLayoutParams(buttonParam);
         restartButton.setText("Restart");
         restartButton.setOnClickListener( new View.OnClickListener() {
@@ -266,11 +264,10 @@ public class MainActivity extends ActionBarActivity {
     // Action Buttons
     public void like(View view){
         swipe.like();
-        swipe.next();
     }
 
     public void dontLike(View view){
-        swipe.next();
+        swipe.dontLike();
     }
 
     public void restart(){
