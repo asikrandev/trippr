@@ -26,13 +26,15 @@ public class TripprSwipe extends View {
     private ArrayList<Bitmap> list;
     private Context context;
 
+    private int item;
+    private int swipeDirection;
     private int minW, minH;
     private int width, height;
 
     private float pos;
     private float xFinger, initTouch;
     private float aspectRatio;
-    private int item;
+
     private boolean fit;
     private boolean square;
 
@@ -58,6 +60,7 @@ public class TripprSwipe extends View {
     private void init(){
         pos = 0;
         item = 0;
+        swipeDirection = 0;
         getSuggestedMinimum();
         mainPaint = new Paint();
         nextPaint = new Paint();
@@ -153,9 +156,7 @@ public class TripprSwipe extends View {
 
         canvas.drawBitmap(list.get(item), null, calculateImageBoundaries(list.get(item), 0), mainPaint);
         if(item + 1 < list.size()) {
-
-            canvas.drawBitmap(list.get(item + 1), null, calculateImageBoundaries(list.get(item+1), 1), nextPaint);
-            canvas.drawBitmap(list.get(item + 1), null, calculateImageBoundaries(list.get(item+1), -1), nextPaint);
+            canvas.drawBitmap(list.get(item + 1), null, calculateImageBoundaries(list.get(item+1), -swipeDirection), nextPaint);
         }
     }
 
@@ -201,17 +202,22 @@ public class TripprSwipe extends View {
                 getParent().requestDisallowInterceptTouchEvent(true);
                 xFinger = motionEvent.getX();
                 initTouch = motionEvent.getX();
+                swipeDirection = 0;
                 return true;
             case MotionEvent.ACTION_MOVE:
                 pos += motionEvent.getX() - xFinger;
+
+                if(motionEvent.getX() > initTouch) swipeDirection = 1;
+                else if(motionEvent.getX() < initTouch)  swipeDirection = -1;
+                else swipeDirection = 0;
+
                 xFinger = motionEvent.getX();
                 break;
             case MotionEvent.ACTION_CANCEL:
-                Log.d("trippr", "CANCEL");
                 break;
             case MotionEvent.ACTION_UP:
                 if( Math.abs(motionEvent.getX() - initTouch) > getWidth()*0.5){
-                     if(motionEvent.getX() > initTouch) like();
+                     if(swipeDirection == 1) like();
                      else dontLike();
                 }else {
                     animate(0);
@@ -254,10 +260,12 @@ public class TripprSwipe extends View {
     }
 
     public void dontLike(){
+        swipeDirection = -1;
         animate(-1);
     }
 
     public void like(){
+        swipeDirection = 1;
         animate(1);
         swipeListener.onLike(item);
     }
@@ -272,6 +280,7 @@ public class TripprSwipe extends View {
                 public void onAnimationEnd(Animator animation) {
                         next();
                         pos = 0;
+                        swipeDirection = 0;
                     }
             });
         }else{

@@ -54,8 +54,18 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/asikrandev/trippr/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.20135364" vertical-offset="1683" max-vertical-offset="4607">
-              <caret line="148" column="42" selection-start-line="148" selection-start-column="42" selection-end-line="148" selection-end-column="42" />
+            <state vertical-scroll-proportion="0.63282573" vertical-offset="408" max-vertical-offset="3859">
+              <caret line="86" column="0" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MySQLiteHelper.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/asikrandev/trippr/util/MySQLiteHelper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2129" max-vertical-offset="3281">
+              <caret line="194" column="5" selection-start-line="194" selection-start-column="5" selection-end-line="194" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -65,7 +75,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/res/values/color.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
-              <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+              <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -74,20 +84,18 @@
       <file leaf-file-name="TripprSwipe.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/asikrandev/trippr/util/TripprSwipe.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="276" max-vertical-offset="5219">
-              <caret line="118" column="30" selection-start-line="118" selection-start-column="30" selection-end-line="118" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="3621" max-vertical-offset="5372">
+              <caret line="241" column="5" selection-start-line="241" selection-start-column="5" selection-end-line="241" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#7031#7032#0" expanded="true" />
-                <element signature="e#7057#7058#0" expanded="true" />
-                <element signature="e#7173#7174#0" expanded="true" />
-                <element signature="e#7197#7198#0" expanded="true" />
-                <element signature="e#7226#7227#0" expanded="true" />
-                <element signature="e#7253#7254#0" expanded="true" />
-                <element signature="e#7662#7859#0" expanded="true" />
-                <element signature="e#7844#7845#0" expanded="true" />
-                <element signature="e#8227#8228#0" expanded="true" />
-                <element signature="e#8260#8261#0" expanded="true" />
+                <element signature="e#7163#7164#0" expanded="true" />
+                <element signature="e#7189#7190#0" expanded="true" />
+                <element signature="e#7305#7306#0" expanded="true" />
+                <element signature="e#7329#7330#0" expanded="true" />
+                <element signature="e#7851#8092#0" expanded="true" />
+                <element signature="e#8077#8078#0" expanded="true" />
+                <element signature="e#8460#8461#0" expanded="true" />
+                <element signature="e#8493#8494#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1151,15 +1159,15 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/app/src/main/java/com/asikrandev/trippr/util/Image.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/asikrandev/trippr/util/MySQLiteHelper.java" />
         <option value="$PROJECT_DIR$/gradle.properties" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/asikrandev/trippr/util/ImagePagerAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/asikrandev/trippr/util/TripprSwipe.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/color.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/button_selector.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/color.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/asikrandev/trippr/util/TripprSwipe.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/asikrandev/trippr/util/MySQLiteHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/asikrandev/trippr/MainActivity.java" />
       </list>
     </option>
@@ -1883,7 +1891,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962447" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1902,7 +1910,7 @@
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3114572" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20202559" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20202559" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32995737" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1961,16 +1969,14 @@
           <caret line="157" column="38" selection-start-line="157" selection-start-column="38" selection-end-line="157" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#7031#7032#0" expanded="true" />
-            <element signature="e#7057#7058#0" expanded="true" />
-            <element signature="e#7173#7174#0" expanded="true" />
-            <element signature="e#7197#7198#0" expanded="true" />
-            <element signature="e#7226#7227#0" expanded="true" />
-            <element signature="e#7253#7254#0" expanded="true" />
-            <element signature="e#7662#7859#0" expanded="true" />
-            <element signature="e#7844#7845#0" expanded="true" />
-            <element signature="e#8227#8228#0" expanded="true" />
-            <element signature="e#8260#8261#0" expanded="true" />
+            <element signature="e#7163#7164#0" expanded="true" />
+            <element signature="e#7189#7190#0" expanded="true" />
+            <element signature="e#7305#7306#0" expanded="true" />
+            <element signature="e#7329#7330#0" expanded="true" />
+            <element signature="e#7851#8092#0" expanded="true" />
+            <element signature="e#8077#8078#0" expanded="true" />
+            <element signature="e#8460#8461#0" expanded="true" />
+            <element signature="e#8493#8494#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2000,16 +2006,14 @@
           <caret line="128" column="14" selection-start-line="128" selection-start-column="14" selection-end-line="128" selection-end-column="14" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#7031#7032#0" expanded="true" />
-            <element signature="e#7057#7058#0" expanded="true" />
-            <element signature="e#7173#7174#0" expanded="true" />
-            <element signature="e#7197#7198#0" expanded="true" />
-            <element signature="e#7226#7227#0" expanded="true" />
-            <element signature="e#7253#7254#0" expanded="true" />
-            <element signature="e#7662#7859#0" expanded="true" />
-            <element signature="e#7844#7845#0" expanded="true" />
-            <element signature="e#8227#8228#0" expanded="true" />
-            <element signature="e#8260#8261#0" expanded="true" />
+            <element signature="e#7163#7164#0" expanded="true" />
+            <element signature="e#7189#7190#0" expanded="true" />
+            <element signature="e#7305#7306#0" expanded="true" />
+            <element signature="e#7329#7330#0" expanded="true" />
+            <element signature="e#7851#8092#0" expanded="true" />
+            <element signature="e#8077#8078#0" expanded="true" />
+            <element signature="e#8460#8461#0" expanded="true" />
+            <element signature="e#8493#8494#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2039,16 +2043,14 @@
           <caret line="112" column="0" selection-start-line="112" selection-start-column="0" selection-end-line="112" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#7031#7032#0" expanded="true" />
-            <element signature="e#7057#7058#0" expanded="true" />
-            <element signature="e#7173#7174#0" expanded="true" />
-            <element signature="e#7197#7198#0" expanded="true" />
-            <element signature="e#7226#7227#0" expanded="true" />
-            <element signature="e#7253#7254#0" expanded="true" />
-            <element signature="e#7662#7859#0" expanded="true" />
-            <element signature="e#7844#7845#0" expanded="true" />
-            <element signature="e#8227#8228#0" expanded="true" />
-            <element signature="e#8260#8261#0" expanded="true" />
+            <element signature="e#7163#7164#0" expanded="true" />
+            <element signature="e#7189#7190#0" expanded="true" />
+            <element signature="e#7305#7306#0" expanded="true" />
+            <element signature="e#7329#7330#0" expanded="true" />
+            <element signature="e#7851#8092#0" expanded="true" />
+            <element signature="e#8077#8078#0" expanded="true" />
+            <element signature="e#8460#8461#0" expanded="true" />
+            <element signature="e#8493#8494#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2315,14 +2317,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/asikrandev/trippr/util/MySQLiteHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.76988155" vertical-offset="1721" max-vertical-offset="2482">
-          <caret line="138" column="36" selection-start-line="138" selection-start-column="36" selection-end-line="138" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
@@ -2347,38 +2341,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/asikrandev/trippr/util/TripprSwipe.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/button_selector.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="276" max-vertical-offset="5219">
-          <caret line="118" column="30" selection-start-line="118" selection-start-column="30" selection-end-line="118" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#7031#7032#0" expanded="true" />
-            <element signature="e#7057#7058#0" expanded="true" />
-            <element signature="e#7173#7174#0" expanded="true" />
-            <element signature="e#7197#7198#0" expanded="true" />
-            <element signature="e#7226#7227#0" expanded="true" />
-            <element signature="e#7253#7254#0" expanded="true" />
-            <element signature="e#7662#7859#0" expanded="true" />
-            <element signature="e#7844#7845#0" expanded="true" />
-            <element signature="e#8227#8228#0" expanded="true" />
-            <element signature="e#8260#8261#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
+          <caret line="16" column="42" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="42" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/color.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/button_selector.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
-          <caret line="16" column="42" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="42" />
+          <caret line="20" column="43" selection-start-line="20" selection-start-column="43" selection-end-line="20" selection-end-column="45" />
           <folding />
         </state>
       </provider>
@@ -2394,10 +2368,36 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/asikrandev/trippr/util/TripprSwipe.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3621" max-vertical-offset="5372">
+          <caret line="241" column="5" selection-start-line="241" selection-start-column="5" selection-end-line="241" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7163#7164#0" expanded="true" />
+            <element signature="e#7189#7190#0" expanded="true" />
+            <element signature="e#7305#7306#0" expanded="true" />
+            <element signature="e#7329#7330#0" expanded="true" />
+            <element signature="e#7851#8092#0" expanded="true" />
+            <element signature="e#8077#8078#0" expanded="true" />
+            <element signature="e#8460#8461#0" expanded="true" />
+            <element signature="e#8493#8494#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/asikrandev/trippr/util/MySQLiteHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2129" max-vertical-offset="3281">
+          <caret line="194" column="5" selection-start-line="194" selection-start-column="5" selection-end-line="194" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/asikrandev/trippr/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.20135364" vertical-offset="1683" max-vertical-offset="4607">
-          <caret line="148" column="42" selection-start-line="148" selection-start-column="42" selection-end-line="148" selection-end-column="42" />
+        <state vertical-scroll-proportion="0.63282573" vertical-offset="408" max-vertical-offset="3859">
+          <caret line="86" column="0" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
           <folding />
         </state>
       </provider>

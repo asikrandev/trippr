@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/text_display"
         android:text="Wait - connecting..."
-        android:textColor="@color/white"
+        android:textColor="@color/lightgray"
         android:background="@color/darkgraya"
         android:layout_alignParentTop="true"
         android:gravity="center_horizontal"

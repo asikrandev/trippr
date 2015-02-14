@@ -74,51 +74,7 @@ public class MainActivity extends ActionBarActivity {
         this.deleteDatabase("trippr");
         // creating new database
         MySQLiteHelper db = new MySQLiteHelper(this);
-
-        // add Images
-        db.addImage(new Image(1,"img01","peace peaceful lights night city quiet clubs buildings traffic "));
-        db.addImage(new Image(2,"img02","peace peaceful sun light clouds air quiet serenity blue colors sunset float smooth sunlight landscape  "));
-        db.addImage(new Image(3,"img03","work peace wood electronic laptop drink alone yellow table write "));
-        db.addImage(new Image(4,"img04","wood brown hard stuck order old steps  "));
-        db.addImage(new Image(5,"img05","Buildings city landscape colors people metropolis high lakes skyscrapers"));
-        db.addImage(new Image(6,"img06","road sun desert travel pacific quiet long brown "));
-        db.addImage(new Image(7,"img07","light grass quiet colors green sunset sun warm field"));
-        db.addImage(new Image(8,"img08","beach sea pier wood landscape sky beautiful  deep hot sunlight "));
-        db.addImage(new Image(9,"img09","road long mountains travel rough warm"));
-        db.addImage(new Image(10,"img10","rough cars gray hard stuck old brand "));
-        db.addImage(new Image(11,"img11","tools work iron steel wood brown dirt "));
-        db.addImage(new Image(12,"img12","blue purple lights defocus photography party night clubs"));
-        db.addImage(new Image(13,"img13","mess wine drink brands brown box disorder "));
-        db.addImage(new Image(14,"img14","yellow blonde quiet trees park sidewalk people walk peaceful wind"));
-        db.addImage(new Image(15,"img15","snow white park road winter trees silent alone cold"));
-        db.addImage(new Image(16,"img16","city people streets buildings  windows modern old order"));
-        db.addImage(new Image(17,"img17","food salad restaurant eat plate delight dinner lunch meat meal"));
-        db.addImage(new Image(18,"img18","animals landscape horse green field grass peaceful"));
-        db.addImage(new Image(19,"img19","river cascade water jungle mountain high plants trees green white weather "));
-        db.addImage(new Image(20,"img20","wood backyard leaves brown wind "));
-        db.addImage(new Image(21,"img21","menu restaurants food meals fruits table drink order tea"));
-        db.addImage(new Image(22,"img22","road house trees mountain warm sunset west planting farm"));
-        db.addImage(new Image(23,"img23","drink money glass ice cold america liquor bar friend"));
-        db.addImage(new Image(24,"img24","party colors balloons house neighborhood peace kids cake"));
-        db.addImage(new Image(25,"img25","wild tiger yellow look serious jungle zoo animal feline cat"));
-        db.addImage(new Image(26,"img26","peaceful night candles light fire yellow steel wish"));
-        db.addImage(new Image(27,"img27","party club night drink alcohol lights dance music bar"));
-        db.addImage(new Image(28,"img28","sand beach stones brown sun warm"));
-        db.addImage(new Image(29,"img29","desert sand hot sun warm alone dust "));
-        db.addImage(new Image(30,"img30","beach sand water cold clothes blue salt"));
-        db.addImage(new Image(31,"img31","library read book mess study write room music desk"));
-        db.addImage(new Image(32,"img32","train wood trees road river lake mountain forest"));
-        db.addImage(new Image(33,"img33","stairs castle dark up bricks gray alone"));
-        db.addImage(new Image(34,"img34","cars speed numbers drive fuel old classic"));
-        db.addImage(new Image(35,"img35","dj party music club dance electro bass night city people enjoy "));
-        db.addImage(new Image(36,"img36","history legend town kingdom shield keys armour kings fenix"));
-        db.addImage(new Image(37,"img37","egypt pyramid sun hot ocean sea desert landscape"));
-        db.addImage(new Image(38,"img38","mountain clouds sky road trees ground town"));
-        db.addImage(new Image(39,"img39","history old museum city town wonderful beautiful temple structure architecture"));
-        db.addImage(new Image(40,"img40","lake water mountain landscape forest peaceful beautiful sunset sea town"));
-        db.addImage(new Image(41,"img41","snow cold white fog ski weather sports clouds high "));
-        db.addImage(new Image(42,"img42","vegetables healthy fruit juice home house ingredients food"));
-        db.addImage(new Image(43,"img43","food rapid hamburger bread meal meat vegetables cheese delicious flavors"));
+        db.loadDB();
 
         // get Images from database
         allImages = db.getAllImages();
