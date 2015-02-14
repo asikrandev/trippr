@@ -1,29 +1,25 @@
 package com.asikrandev.trippr;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.acision.acisionsdk.AcisionSdk;
 import com.acision.acisionsdk.AcisionSdkCallbacks;
@@ -32,23 +28,23 @@ import com.acision.acisionsdk.messaging.Messaging;
 import com.acision.acisionsdk.messaging.MessagingReceiveCallbacks;
 import com.acision.acisionsdk.messaging.MessagingReceivedMessage;
 import com.acision.acisionsdk.messaging.MessagingSendOptions;
+import com.asikrandev.trippr.util.Flightsearch;
 import com.asikrandev.trippr.util.Image;
 import com.asikrandev.trippr.util.MySQLiteHelper;
 import com.asikrandev.trippr.util.TripprSwipe;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    private FrameLayout content;
     private FrameLayout swipeContent;
     private LinearLayout buttonsLayout;
-    private ImageView image;
     private TextView result;
     private ImageButton restartButton;
     private ImageButton yesButton;
@@ -57,16 +53,14 @@ public class MainActivity extends ActionBarActivity {
     private ArrayList<Image> list, allImages;
     private ArrayList<String> like, destination;
     private int position;
+    private String city;
 
     private AcisionSdk acisionSdk;
     private Messaging messaging;
 
-    ViewPager.OnTouchListener gestureListener;
-
-    TripprSwipe swipe;
+    private TripprSwipe swipe;
 
     private void init(){
-
         like = new ArrayList<String>();
         destination = new ArrayList<String>();
 
@@ -74,6 +68,7 @@ public class MainActivity extends ActionBarActivity {
         this.deleteDatabase("trippr");
         // creating new database
         MySQLiteHelper db = new MySQLiteHelper(this);
+
         db.loadDB();
 
         // get Images from database
@@ -83,7 +78,9 @@ public class MainActivity extends ActionBarActivity {
 
         Collections.shuffle(subSet);
 
-        list =  new ArrayList<Image>(subSet.subList(0,10));
+        Random random = new Random();
+        int roundCount = random.nextInt((10 - 4) + 1) + 5;
+        list =  new ArrayList<Image>(subSet.subList(0,roundCount));
 
         swipeContent = (FrameLayout) findViewById(R.id.tripper_swipe);
 
@@ -144,6 +141,8 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+
+
     private void start() {
         AcisionSdkConfiguration config = new AcisionSdkConfiguration("wvatXmaKZcmM", "jegasmlm_gmail_com_0", "3Ph0jsEHe");
         config.setPersistent(true);
@@ -184,6 +183,46 @@ public class MainActivity extends ActionBarActivity {
         init();
 
         start();
+
+        //getCurrentCityName();
+
+        Flightsearch search = new Flightsearch();
+        search.execute("");
+
+        String getmessage = "error";
+        try {
+            getmessage = search.get();
+        } catch (Exception e) {
+            System.out.println("error in get");
+        }
+        Toast toast = Toast.makeText(this.getApplicationContext(), getmessage, Toast.LENGTH_LONG);
+        toast.show();
+
+    }
+
+    /**
+     * Get current city from location info
+     */
+    protected void getCurrentCityName() {
+        LocationManager mgr = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Location location = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        Geocoder gcd = new Geocoder(this.getApplicationContext(), Locale.getDefault());
+        try {
+            List<Address> addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            String address = "empty";
+            if (addresses.size() > 0) {
+                address = addresses.get(0).getLocality();
+            }
+            String message = "You are in " + address + " ;)";
+            Toast toast = Toast.makeText(this.getApplicationContext(), message, Toast.LENGTH_SHORT);
+            toast.show();
+            this.city = address;
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     @Override
@@ -241,7 +280,9 @@ public class MainActivity extends ActionBarActivity {
 
         Collections.shuffle(subSet);
 
-        list =  new ArrayList<Image>(subSet.subList(0,10));
+        Random random = new Random();
+        int roundCount = random.nextInt((10 - 5) + 1) + 5;
+        list =  new ArrayList<Image>(subSet.subList(0,roundCount));
 
         like.clear();
 
