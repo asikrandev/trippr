@@ -178,9 +178,9 @@ public class MainActivity extends ActionBarActivity {
 
                 String[] response = data.getContent().split(":");
 
-                String city = "New York";//response[0];
+                String city = response[0];
                 String country = response[1];
-                String countrycode = "US";//response[2];
+                String countrycode = response[2];
 
                 String currentCityCode = getCurrentCityName();
 
@@ -199,7 +199,7 @@ public class MainActivity extends ActionBarActivity {
                     System.out.println("error in get");
                 }
 
-                String link =  "http://www.skyscanner.com/transport/flights/" + currentCityCode + "/" + destinationCode +"/";
+                String link = "http://www.skyscanner.com/transport/flights/" + currentCityCode + "/" + destinationCode +"/";
 
                 result.setText(city + ", " + country + " " + price + "$");
                 destination.add(data.getContent());

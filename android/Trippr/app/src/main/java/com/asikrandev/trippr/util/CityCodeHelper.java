@@ -25,7 +25,7 @@ public class CityCodeHelper {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] rowData = line.split(",");
-                if (rowData[3].equals("\"" + city + "\"") && rowData[1].equals("\"" + country + "\"")) {
+                if ((rowData[3].equals("\"" + city + "\"") || rowData[4].equals("\"" + city + "\"") )&& rowData[1].equals("\"" + country + "\"")) {
                     Log.d("found place", rowData[1] + rowData[2] + rowData[3]);
                     return rowData[2].replace("\"", "");
                 }
