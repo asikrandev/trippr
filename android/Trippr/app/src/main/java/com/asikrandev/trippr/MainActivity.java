@@ -28,6 +28,7 @@ import com.acision.acisionsdk.messaging.Messaging;
 import com.acision.acisionsdk.messaging.MessagingReceiveCallbacks;
 import com.acision.acisionsdk.messaging.MessagingReceivedMessage;
 import com.acision.acisionsdk.messaging.MessagingSendOptions;
+import com.asikrandev.trippr.util.CityCodeHelper;
 import com.asikrandev.trippr.util.Flightsearch;
 import com.asikrandev.trippr.util.Image;
 import com.asikrandev.trippr.util.MySQLiteHelper;
@@ -54,6 +55,9 @@ public class MainActivity extends ActionBarActivity {
     private ArrayList<String> like, destination;
     private int position;
     private String city;
+    private String cityCode;
+
+    private String cheapestPrice;
 
     private AcisionSdk acisionSdk;
     private Messaging messaging;
@@ -184,18 +188,23 @@ public class MainActivity extends ActionBarActivity {
 
         start();
 
-        //getCurrentCityName();
+        getCurrentCityName();
+
+        CityCodeHelper cityCodeHelper = new CityCodeHelper();
+
+        //TODO: get destination code
+        String destinationCode = "NYC";
 
         Flightsearch search = new Flightsearch();
-        search.execute("");
+        search.execute(this.cityCode, destinationCode);
 
         String getmessage = "error";
         try {
-            getmessage = search.get();
+            this.cheapestPrice = search.get();
         } catch (Exception e) {
             System.out.println("error in get");
         }
-        Toast toast = Toast.makeText(this.getApplicationContext(), getmessage, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(this.getApplicationContext(), this.cheapestPrice, Toast.LENGTH_LONG);
         toast.show();
 
     }
@@ -208,16 +217,28 @@ public class MainActivity extends ActionBarActivity {
         Location location = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         Geocoder gcd = new Geocoder(this.getApplicationContext(), Locale.getDefault());
+
+        this.cityCode = "BKK";
+
         try {
             List<Address> addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
             String address = "empty";
             if (addresses.size() > 0) {
                 address = addresses.get(0).getLocality();
             }
-            String message = "You are in " + address + " ;)";
+
+            this.city = address;
+
+            CityCodeHelper cityCodeHelper = new CityCodeHelper();
+
+            String countryCode = addresses.get(0).getCountryCode();
+            String code = cityCodeHelper.findCityCode(address, countryCode, this.getApplicationContext());
+
+            this.cityCode = code;
+
+            String message = "You are in " + address + ", code is " + code +" ;)";
             Toast toast = Toast.makeText(this.getApplicationContext(), message, Toast.LENGTH_SHORT);
             toast.show();
-            this.city = address;
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
