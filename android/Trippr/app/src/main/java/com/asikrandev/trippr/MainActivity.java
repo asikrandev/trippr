@@ -1,5 +1,6 @@
 package com.asikrandev.trippr;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -165,11 +166,42 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
+    public Context getContext() {
+        return (Context)this;
+    }
+
     private void testMessaging(Messaging messaging) {
+
         messaging.setCallbacks(new MessagingReceiveCallbacks() {
             @Override
             public void onMessageReceived(Messaging messaging, MessagingReceivedMessage data) {
-                result.setText(data.getContent());
+
+                String[] response = data.getContent().split(":");
+
+                String city = "New York";//response[0];
+                String country = response[1];
+                String countrycode = "US";//response[2];
+
+                String currentCityCode = getCurrentCityName();
+
+                CityCodeHelper cityCodeHelper = new CityCodeHelper();
+
+                String destinationCode = cityCodeHelper.findCityCode(city, countrycode, getContext());
+
+                Flightsearch search = new Flightsearch();
+                search.execute(currentCityCode, destinationCode);
+
+                String getmessage = "error";
+                String price = "";
+                try {
+                    price = search.get();
+                } catch (Exception e) {
+                    System.out.println("error in get");
+                }
+
+                String link =  "http://www.skyscanner.com/transport/flights/" + currentCityCode + "/" + destinationCode +"/";
+
+                result.setText(city + ", " + country + " " + price + "$");
                 destination.add(data.getContent());
             }
         });
@@ -188,37 +220,18 @@ public class MainActivity extends ActionBarActivity {
 
         start();
 
-        getCurrentCityName();
-
-        CityCodeHelper cityCodeHelper = new CityCodeHelper();
-
-        //TODO: get destination code
-        String destinationCode = "NYC";
-
-        Flightsearch search = new Flightsearch();
-        search.execute(this.cityCode, destinationCode);
-
-        String getmessage = "error";
-        try {
-            this.cheapestPrice = search.get();
-        } catch (Exception e) {
-            System.out.println("error in get");
-        }
-        Toast toast = Toast.makeText(this.getApplicationContext(), this.cheapestPrice, Toast.LENGTH_LONG);
-        toast.show();
-
     }
 
     /**
      * Get current city from location info
      */
-    protected void getCurrentCityName() {
+    protected String getCurrentCityName() {
         LocationManager mgr = (LocationManager) getSystemService(LOCATION_SERVICE);
         Location location = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         Geocoder gcd = new Geocoder(this.getApplicationContext(), Locale.getDefault());
 
-        this.cityCode = "BKK";
+        String code = "BKK";
 
         try {
             List<Address> addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
@@ -232,18 +245,19 @@ public class MainActivity extends ActionBarActivity {
             CityCodeHelper cityCodeHelper = new CityCodeHelper();
 
             String countryCode = addresses.get(0).getCountryCode();
-            String code = cityCodeHelper.findCityCode(address, countryCode, this.getApplicationContext());
+            code = cityCodeHelper.findCityCode(address, countryCode, this.getApplicationContext());
 
             this.cityCode = code;
-
             String message = "You are in " + address + ", code is " + code +" ;)";
             Toast toast = Toast.makeText(this.getApplicationContext(), message, Toast.LENGTH_SHORT);
             toast.show();
+            return code;
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
 
+        return "BKK";
     }
 
     @Override
