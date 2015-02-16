@@ -9,7 +9,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.Menu;
@@ -17,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -170,6 +168,13 @@ public class MainActivity extends ActionBarActivity {
         return (Context)this;
     }
 
+    public String getCityCode() {
+        if (this.cityCode == null) {
+            return findCurrentCityCode();
+        }
+        return this.cityCode;
+    }
+
     private void testMessaging(Messaging messaging) {
 
         messaging.setCallbacks(new MessagingReceiveCallbacks() {
@@ -182,7 +187,7 @@ public class MainActivity extends ActionBarActivity {
                 String country = response[1];
                 String countrycode = response[2];
 
-                String currentCityCode = getCurrentCityName();
+                String currentCityCode = getCityCode();
 
                 CityCodeHelper cityCodeHelper = new CityCodeHelper();
 
@@ -225,13 +230,17 @@ public class MainActivity extends ActionBarActivity {
     /**
      * Get current city from location info
      */
-    protected String getCurrentCityName() {
+    protected String findCurrentCityCode() {
         LocationManager mgr = (LocationManager) getSystemService(LOCATION_SERVICE);
         Location location = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        Geocoder gcd = new Geocoder(this.getApplicationContext(), Locale.getDefault());
+        Geocoder gcd = new Geocoder(this.getContext(), Locale.getDefault());
 
-        String code = "BKK";
+        if (location == null) {
+            location = mgr.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        }
+
+        String code = "";
 
         try {
             List<Address> addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
@@ -257,7 +266,7 @@ public class MainActivity extends ActionBarActivity {
             System.out.println(e.getMessage());
         }
 
-        return "BKK";
+        return "BER";
     }
 
     @Override
