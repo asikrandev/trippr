@@ -207,7 +207,7 @@ public class MainActivity extends ActionBarActivity {
                 String link = "http://www.skyscanner.com/transport/flights/" + currentCityCode + "/" + destinationCode +"/";
 
                 result.setText(city + ", " + country + " " + price + "$");
-                destination.add(data.getContent());
+                destination.add(city);
             }
         });
     }
