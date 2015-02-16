@@ -269,6 +269,26 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         addImage(new Image(118,"img118","wood hole view scape trap inside"));
         addImage(new Image(119,"img119","rocks beach waves hard difficult breakwaters"));
         addImage(new Image(120,"img120","rain city inside trap cold tall high"));
+        addImage(new Image(121,"img121","dog dogs grass green brown ear animals"));
+        addImage(new Image(122,"img122","rocks rock hard stone grass sky"));
+        addImage(new Image(123,"img123","leave leaves yellow floor street sidewalk"));
+        addImage(new Image(124,"img124","coffee tea hot cold sit restaurant quiet"));
+        addImage(new Image(125,"img125","restaurant food gastronomic gourmet eat table"));
+        addImage(new Image(126,"img126","cell cellphone phone call message technology speakers"));
+        addImage(new Image(127,"img127","concert music loud band fun enjoy public stage"));
+        addImage(new Image(128,"img128","skate sport park play sit drums punk"));
+        addImage(new Image(129,"img129","sand foot step human walk beach serenity sun"));
+        addImage(new Image(130,"img130","beach rail train travel move bay"));
+        addImage(new Image(131,"img131","city lake river water buildings modern big"));
+        addImage(new Image(132,"img132","house lake nature mountains trees alone boat"));
+        addImage(new Image(133,"img133","castle legend legacy big history kingdom"));
+        addImage(new Image(134,"img134","guitar music strings brand play band melody"));
+        addImage(new Image(135,"img135","bridge construction architecture big tall high old"));
+        addImage(new Image(136,"img136","concert loud music smoke drinks party fun"));
+        addImage(new Image(137,"img137","stars sky lights night space field"));
+        addImage(new Image(138,"img138","boat beach lake water pure nature alone quiet"));
+        addImage(new Image(139,"img139","history city modern new lake bridge lights"));
+        addImage(new Image(140,"img140","field trees desert house landscape beautiful farm"));
 
 
     }
