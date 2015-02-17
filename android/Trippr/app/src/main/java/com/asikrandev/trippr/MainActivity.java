@@ -32,6 +32,7 @@ import com.asikrandev.trippr.util.Flightsearch;
 import com.asikrandev.trippr.util.Image;
 import com.asikrandev.trippr.util.MySQLiteHelper;
 import com.asikrandev.trippr.util.TripprSwipe;
+import com.joanzapata.android.iconify.Iconify;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -92,6 +93,14 @@ public class MainActivity extends ActionBarActivity {
         yesButton = (ImageButton) findViewById(R.id.yesButton);
         noButton = (ImageButton) findViewById(R.id.noButton);
 
+        result = new TextView(this);
+        FrameLayout.LayoutParams tvParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        tvParams.gravity = Gravity.CENTER;
+        result.setLayoutParams(tvParams);
+        result.setTextSize(50);
+        result.setTextColor(getResources().getColor(R.color.lightgray));
+        Iconify.addIcons(result);
+
         swipe = new TripprSwipe(this, getBitmapList(), false);
         swipe.setFit(true);
         swipe.setOnSwipeListener(new TripprSwipe.onSwipeListener() {
@@ -106,7 +115,8 @@ public class MainActivity extends ActionBarActivity {
 
                 doSend(query);
 
-                result.setText("wait...");
+                Iconify.addIcons(result);
+                result.setText("{fa-android}");
                 swipeContent.removeView(swipe);
                 swipeContent.addView(result);
 
@@ -120,13 +130,6 @@ public class MainActivity extends ActionBarActivity {
         swipeParams.gravity = Gravity.CENTER;
         swipe.setLayoutParams(swipeParams);
         swipeContent.addView(swipe);
-
-        result = new TextView(this);
-        FrameLayout.LayoutParams tvParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-        tvParams.gravity = Gravity.CENTER;
-        result.setLayoutParams(tvParams);
-        result.setTextSize(50);
-        result.setTextColor(getResources().getColor(R.color.lightgray));
 
         restartButton = new ImageButton(this);
         LinearLayout.LayoutParams buttonParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
