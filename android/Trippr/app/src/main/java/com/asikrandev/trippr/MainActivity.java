@@ -32,6 +32,7 @@ import com.asikrandev.trippr.util.Flightsearch;
 import com.asikrandev.trippr.util.Image;
 import com.asikrandev.trippr.util.MySQLiteHelper;
 import com.asikrandev.trippr.util.TripprSwipe;
+import com.joanzapata.android.iconify.Iconify;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -99,40 +100,12 @@ public class MainActivity extends ActionBarActivity {
         yesButton = (ImageButton) findViewById(R.id.yesButton);
         noButton = (ImageButton) findViewById(R.id.noButton);
 
-        swipe = new TripprSwipe(this, getBitmapList(), false);
-        swipe.setFit(true);
-        swipe.setOnSwipeListener(new TripprSwipe.onSwipeListener() {
-            @Override
-            public void onLike(int position) {
-                like.add(list.get(position).getTags());
-            }
-
-            @Override
-            public void onFinished() {
-                String query = getQuery();
-
-                doSend(query);
-
-                cityResultTV.setText("wait...");
-                content.removeView(swipe);
-                content.addView(resultLayout);
-
-                buttonsLayout.removeView(yesButton);
-                buttonsLayout.removeView(noButton);
-                buttonsLayout.addView(restartButton);
-            }
-        });
-
-        FrameLayout.LayoutParams swipeParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
-        swipeParams.gravity = Gravity.CENTER;
-        swipe.setLayoutParams(swipeParams);
-        content.addView(swipe);
-
         resultLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.result, null);
         cityResultTV = (TextView) resultLayout.findViewById(R.id.city);
         countryResultTV = (TextView) resultLayout.findViewById(R.id.country);
         priceTV = (TextView) resultLayout.findViewById(R.id.price);
         fromCityTV = (TextView) resultLayout.findViewById(R.id.from);
+        Iconify.addIcons(cityResultTV);
 
         restartButton = new ImageButton(this);
         LinearLayout.LayoutParams buttonParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -148,6 +121,35 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
+        swipe = new TripprSwipe(this, getBitmapList(), false);
+        swipe.setFit(true);
+        swipe.setOnSwipeListener(new TripprSwipe.onSwipeListener() {
+            @Override
+            public void onLike(int position) {
+                like.add(list.get(position).getTags());
+            }
+
+            @Override
+            public void onFinished() {
+                String query = getQuery();
+
+                doSend(query);
+
+                Iconify.addIcons(cityResultTV);
+                cityResultTV.setText("{fa-android}");
+                content.removeView(swipe);
+                content.addView(resultLayout);
+
+                buttonsLayout.removeView(yesButton);
+                buttonsLayout.removeView(noButton);
+                buttonsLayout.addView(restartButton);
+            }
+        });
+
+        LinearLayout.LayoutParams swipeParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        swipeParams.gravity = Gravity.CENTER;
+        swipe.setLayoutParams(swipeParams);
+        content.addView(swipe);
     }
 
 
