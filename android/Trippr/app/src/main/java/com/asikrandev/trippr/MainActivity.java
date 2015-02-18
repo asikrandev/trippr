@@ -144,25 +144,18 @@ public class MainActivity extends ActionBarActivity {
 
                 doSend(query);
 
-<<<<<<< HEAD
-                Iconify.addIcons(waitTV);
-                waitTV.setText("{fa-android}");
-=======
-                cityResultTV.setText("{fa-cog}");
-                Iconify.addIcons(cityResultTV);
-                Animation animation = new RotateAnimation(0.0f,360.0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
-                animation.setDuration(700);
-                animation.setFillEnabled(true);
-                animation.setFillAfter(true);
-                cityResultTV.startAnimation(animation);
-                content.removeView(swipe);
-                content.addView(resultLayout);
-
->>>>>>> 13f8baf17332fdb97faf5b8ce870a7ef0b456b7b
                 buttonsLayout.removeView(yesButton);
                 buttonsLayout.removeView(noButton);
                 content.removeView(swipe);
                 content.addView(waitLayout);
+
+                waitTV.setText("{fa-cog}");
+                Iconify.addIcons(waitTV);
+                Animation animation = new RotateAnimation(0.0f,360.0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+                animation.setDuration(700);
+                animation.setFillEnabled(true);
+                animation.setFillAfter(true);
+                waitTV.startAnimation(animation);
 
             }
         });
