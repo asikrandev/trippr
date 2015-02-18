@@ -1,6 +1,7 @@
 package com.asikrandev.trippr;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,14 +9,18 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -139,8 +144,21 @@ public class MainActivity extends ActionBarActivity {
 
                 doSend(query);
 
+<<<<<<< HEAD
                 Iconify.addIcons(waitTV);
                 waitTV.setText("{fa-android}");
+=======
+                cityResultTV.setText("{fa-cog}");
+                Iconify.addIcons(cityResultTV);
+                Animation animation = new RotateAnimation(0.0f,360.0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+                animation.setDuration(700);
+                animation.setFillEnabled(true);
+                animation.setFillAfter(true);
+                cityResultTV.startAnimation(animation);
+                content.removeView(swipe);
+                content.addView(resultLayout);
+
+>>>>>>> 13f8baf17332fdb97faf5b8ce870a7ef0b456b7b
                 buttonsLayout.removeView(yesButton);
                 buttonsLayout.removeView(noButton);
                 content.removeView(swipe);
@@ -185,6 +203,12 @@ public class MainActivity extends ActionBarActivity {
         }
         return this.cityCode;
     }
+    public String getCityName() {
+        if (this.fromCity == null) {
+            return findCurrentCityCode();
+        }
+        return this.fromCity;
+    }
 
     private void testMessaging(Messaging messaging) {
 
@@ -203,6 +227,11 @@ public class MainActivity extends ActionBarActivity {
                 String countrycode = response[2];
 
                 String currentCityCode = getCityCode();
+                String currentcity = getCityName();
+
+                if (currentCityCode.equals("BER")) {
+                    currentCityCode = "BERL";
+                }
 
                 CityCodeHelper cityCodeHelper = new CityCodeHelper();
 
@@ -219,12 +248,25 @@ public class MainActivity extends ActionBarActivity {
                     System.out.println("error in get");
                 }
 
-                String link = "http://www.skyscanner.com/transport/flights/" + currentCityCode + "/" + destinationCode +"/";
+                final String link = "http://www.skyscanner.com/transport/flights/" + currentCityCode + "/" + destinationCode +"/";
+
+
+                ImageView resultImage = (ImageView) findViewById(R.id.resultimage);
+                resultImage.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        Uri uri = Uri.parse(link);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                    }
+
+                });
 
                 cityResultTV.setText(cityResult);
                 countryResultTV.setText(countryResult);
                 priceTV.setText("$" + cheapestPrice);
-                fromCityTV.setText(fromCity);
+                fromCityTV.setText(currentCityCode + " - " + destinationCode);
 
                 destination.add(cityResult);
             }
