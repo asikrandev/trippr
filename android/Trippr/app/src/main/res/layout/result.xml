@@ -34,7 +34,7 @@
         android:layout_margin="10dp" >
 
         <ImageView
-            android:id="@+id/resultimage"
+            android:id="@+id/result_image"
             android:layout_width="300dp"
             android:layout_height="225dp"
             android:src="@drawable/flight"/>

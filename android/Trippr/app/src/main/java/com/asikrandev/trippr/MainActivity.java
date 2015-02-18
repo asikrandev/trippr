@@ -111,12 +111,13 @@ public class MainActivity extends ActionBarActivity {
 
         waitLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.waiting, null);
         waitTV = (TextView) waitLayout.findViewById(R.id.wait);
+        Iconify.addIcons(waitTV);
+
         resultLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.result, null);
         cityResultTV = (TextView) resultLayout.findViewById(R.id.city);
         countryResultTV = (TextView) resultLayout.findViewById(R.id.country);
         priceTV = (TextView) resultLayout.findViewById(R.id.price);
         fromCityTV = (TextView) resultLayout.findViewById(R.id.from);
-        Iconify.addIcons(waitTV);
 
         restartButton = new ImageButton(this);
         LinearLayout.LayoutParams buttonParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -142,9 +143,6 @@ public class MainActivity extends ActionBarActivity {
 
             @Override
             public void onFinished() {
-                String query = getQuery();
-
-                doSend(query);
 
                 buttonsLayout.removeView(yesButton);
                 buttonsLayout.removeView(noButton);
@@ -158,6 +156,10 @@ public class MainActivity extends ActionBarActivity {
                 int degreesPerSecond = 360;
                 waitTV.animate().rotationBy(degreesPerSecond * loops).setDuration(loops * 10000)
                         .setInterpolator(new LinearInterpolator());
+
+                String query = getQuery();
+
+                doSend(query);
 
             }
         });
@@ -211,10 +213,6 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onMessageReceived(Messaging messaging, MessagingReceivedMessage data) {
 
-                content.removeView(waitLayout);
-                content.addView(resultLayout);
-                buttonsLayout.addView(restartButton);
-
                 String[] response = data.getContent().split(":");
 
                 cityResult = response[0];
@@ -245,8 +243,7 @@ public class MainActivity extends ActionBarActivity {
 
                 final String link = "http://www.skyscanner.com/transport/flights/" + currentCityCode + "/" + destinationCode +"/";
 
-
-                ImageView resultImage = (ImageView) findViewById(R.id.resultimage);
+                ImageView resultImage = (ImageView) resultLayout.findViewById(R.id.result_image);
                 resultImage.setOnClickListener(new View.OnClickListener() {
 
                     @Override
@@ -264,6 +261,12 @@ public class MainActivity extends ActionBarActivity {
                 fromCityTV.setText(currentCityCode + " - " + destinationCode);
 
                 destination.add(cityResult);
+
+                content.removeView(waitLayout);
+                if(resultLayout.getParent() == null) {
+                    content.addView(resultLayout);
+                    buttonsLayout.addView(restartButton);
+                }
             }
         });
     }
@@ -280,7 +283,6 @@ public class MainActivity extends ActionBarActivity {
         init();
 
         start();
-
     }
 
     /**
@@ -374,10 +376,6 @@ public class MainActivity extends ActionBarActivity {
         swipe.dontLike();
     }
 
-    public void gotToFlight(){
-
-    }
-
     public void restart(){
 
         ArrayList<Image> subSet =  (ArrayList<Image>)allImages.clone();
@@ -393,7 +391,6 @@ public class MainActivity extends ActionBarActivity {
         swipe.restart();
 
         content.removeView(resultLayout);
-        content.removeView(waitLayout);
         content.addView(swipe);
 
         buttonsLayout.removeView(restartButton);

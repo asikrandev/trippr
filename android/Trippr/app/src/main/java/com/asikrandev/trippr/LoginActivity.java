@@ -41,7 +41,9 @@ public class LoginActivity extends Activity {
         user = username.getText().toString();
         pass = password.getText().toString();
 
-        start(user, pass);
+        //start(user, pass);
+
+        startSession();
 
     }
 
