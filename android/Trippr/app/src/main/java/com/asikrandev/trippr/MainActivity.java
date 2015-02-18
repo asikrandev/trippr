@@ -47,11 +47,13 @@ public class MainActivity extends ActionBarActivity {
     private LinearLayout content;
     private LinearLayout buttonsLayout;
     private LinearLayout resultLayout;
+    private LinearLayout waitLayout;
 
     private TextView cityResultTV;
     private TextView countryResultTV;
     private TextView priceTV;
     private TextView fromCityTV;
+    private TextView waitTV;
 
     private ImageButton restartButton;
     private ImageButton yesButton;
@@ -100,12 +102,14 @@ public class MainActivity extends ActionBarActivity {
         yesButton = (ImageButton) findViewById(R.id.yesButton);
         noButton = (ImageButton) findViewById(R.id.noButton);
 
+        waitLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.waiting, null);
+        waitTV = (TextView) waitLayout.findViewById(R.id.wait);
         resultLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.result, null);
         cityResultTV = (TextView) resultLayout.findViewById(R.id.city);
         countryResultTV = (TextView) resultLayout.findViewById(R.id.country);
         priceTV = (TextView) resultLayout.findViewById(R.id.price);
         fromCityTV = (TextView) resultLayout.findViewById(R.id.from);
-        Iconify.addIcons(cityResultTV);
+        Iconify.addIcons(waitTV);
 
         restartButton = new ImageButton(this);
         LinearLayout.LayoutParams buttonParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -135,14 +139,13 @@ public class MainActivity extends ActionBarActivity {
 
                 doSend(query);
 
-                Iconify.addIcons(cityResultTV);
-                cityResultTV.setText("{fa-android}");
-                content.removeView(swipe);
-                content.addView(resultLayout);
-
+                Iconify.addIcons(waitTV);
+                waitTV.setText("{fa-android}");
                 buttonsLayout.removeView(yesButton);
                 buttonsLayout.removeView(noButton);
-                buttonsLayout.addView(restartButton);
+                content.removeView(swipe);
+                content.addView(waitLayout);
+
             }
         });
 
@@ -188,6 +191,10 @@ public class MainActivity extends ActionBarActivity {
         messaging.setCallbacks(new MessagingReceiveCallbacks() {
             @Override
             public void onMessageReceived(Messaging messaging, MessagingReceivedMessage data) {
+
+                content.removeView(waitLayout);
+                content.addView(resultLayout);
+                buttonsLayout.addView(restartButton);
 
                 String[] response = data.getContent().split(":");
 

@@ -216,7 +216,7 @@ public class TripprSwipe extends View {
             case MotionEvent.ACTION_CANCEL:
                 break;
             case MotionEvent.ACTION_UP:
-                if( Math.abs(motionEvent.getX() - initTouch) > getWidth()*0.5){
+                if( Math.abs(motionEvent.getX() - initTouch) > getWidth()*0.2){
                      if(swipeDirection == 1) like();
                      else dontLike();
                 }else {
