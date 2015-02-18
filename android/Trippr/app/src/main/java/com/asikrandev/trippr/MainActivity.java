@@ -144,6 +144,10 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onFinished() {
 
+                Iconify.addIcons(waitTV);
+                waitTV.setText("{fa-android}");
+                cityResultTV.setText("{fa-cog}");
+                Iconify.addIcons(cityResultTV);
                 buttonsLayout.removeView(yesButton);
                 buttonsLayout.removeView(noButton);
                 content.removeView(swipe);
@@ -151,6 +155,19 @@ public class MainActivity extends ActionBarActivity {
 
                 waitTV.setText("{fa-cog}");
                 Iconify.addIcons(waitTV);
+
+                /*Animation animation = new RotateAnimation(0.0f,360.0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+                animation.setDuration(700);
+                animation.setFillEnabled(true);
+                animation.setFillAfter(true);
+                cityResultTV.startAnimation(animation);
+                content.removeView(swipe);
+                //content.addView(resultLayout);
+                buttonsLayout.removeView(yesButton);
+                buttonsLayout.removeView(noButton);
+                content.removeView(swipe);
+                content.addView(waitLayout);
+                waitTV.startAnimation(animation);*/
 
                 int loops = 1000000;
                 int degreesPerSecond = 360;
