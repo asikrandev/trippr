@@ -2,7 +2,8 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
@@ -13,7 +14,7 @@
         android:textSize="40sp"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
-        android:text="City"/>
+        android:text=""/>
 
     <TextView
         android:id="@+id/country"
@@ -23,14 +24,17 @@
         android:textSize="20sp"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
-        android:text="Country" />
+        android:text="" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_margin="10dp" >
 
         <ImageView
+            android:id="@+id/resultimage"
             android:layout_width="300dp"
             android:layout_height="225dp"
             android:src="@drawable/flight"/>
@@ -44,16 +48,6 @@
             android:padding="50dp">
 
             <TextView
-                android:id="@+id/price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/white"
-                android:layout_margin="10dp"
-                android:textSize="40sp"
-                android:text="$300"/>
-
-            <TextView
                 android:id="@+id/from"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,10 +55,20 @@
                 android:textColor="@color/white"
                 android:layout_margin="10dp"
                 android:textSize="20sp"
-                android:text="From New York"/>
+                android:text="-"/>
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:layout_margin="10dp"
+                android:textSize="50sp"
+                android:text=""/>
 
 
-            </LinearLayout>
+        </LinearLayout>
 
         </RelativeLayout>
 
