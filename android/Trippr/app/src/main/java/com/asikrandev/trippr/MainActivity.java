@@ -156,7 +156,7 @@ public class MainActivity extends ActionBarActivity {
 
                 int loops = 1000000;
                 int degreesPerSecond = 360;
-                waitTV.animate().rotationBy(degreesPerSecond * loops).setDuration(loops * 1000)
+                waitTV.animate().rotationBy(degreesPerSecond * loops).setDuration(loops * 10000)
                         .setInterpolator(new LinearInterpolator());
 
             }
