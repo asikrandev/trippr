@@ -157,6 +157,11 @@ public class MainActivity extends ActionBarActivity {
                 animation.setFillEnabled(true);
                 animation.setFillAfter(true);
                 waitTV.startAnimation(animation);
+                animation = new RotateAnimation(0.0f,360.0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
+                animation.setDuration(700);
+                animation.setFillEnabled(true);
+                animation.setFillAfter(true);
+                waitTV.startAnimation(animation);
 
             }
         });
@@ -287,12 +292,12 @@ public class MainActivity extends ActionBarActivity {
      */
     protected String findCurrentCityCode() {
         LocationManager mgr = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Location location = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location location = mgr.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
         Geocoder gcd = new Geocoder(this.getContext(), Locale.getDefault());
 
         if (location == null) {
-            location = mgr.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            location = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
 
         String code = "";
@@ -317,7 +322,7 @@ public class MainActivity extends ActionBarActivity {
             toast.show();
             return code;
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.d("Problem in detecting city", e.getMessage());
         }
 
@@ -392,6 +397,7 @@ public class MainActivity extends ActionBarActivity {
         swipe.restart();
 
         content.removeView(resultLayout);
+        content.removeView(waitLayout);
         content.addView(swipe);
 
         buttonsLayout.removeView(restartButton);
