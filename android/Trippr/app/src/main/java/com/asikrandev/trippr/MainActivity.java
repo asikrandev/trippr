@@ -12,11 +12,13 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -151,11 +153,11 @@ public class MainActivity extends ActionBarActivity {
 
                 waitTV.setText("{fa-cog}");
                 Iconify.addIcons(waitTV);
-                Animation animation = new RotateAnimation(0.0f,360.0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
-                animation.setDuration(700);
-                animation.setFillEnabled(true);
-                animation.setFillAfter(true);
-                waitTV.startAnimation(animation);
+
+                int loops = 1000000;
+                int degreesPerSecond = 360;
+                waitTV.animate().rotationBy(degreesPerSecond * loops).setDuration(loops * 10000)
+                        .setInterpolator(new LinearInterpolator());
 
             }
         });
@@ -286,12 +288,12 @@ public class MainActivity extends ActionBarActivity {
      */
     protected String findCurrentCityCode() {
         LocationManager mgr = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Location location = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location location = mgr.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
         Geocoder gcd = new Geocoder(this.getContext(), Locale.getDefault());
 
         if (location == null) {
-            location = mgr.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            location = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
 
         String code = "";
@@ -316,8 +318,8 @@ public class MainActivity extends ActionBarActivity {
             toast.show();
             return code;
 
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            Log.d("Problem in detecting city", e.getMessage());
         }
 
         return "BER";
@@ -391,6 +393,7 @@ public class MainActivity extends ActionBarActivity {
         swipe.restart();
 
         content.removeView(resultLayout);
+        content.removeView(waitLayout);
         content.addView(swipe);
 
         buttonsLayout.removeView(restartButton);
