@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -152,16 +153,11 @@ public class MainActivity extends ActionBarActivity {
 
                 waitTV.setText("{fa-cog}");
                 Iconify.addIcons(waitTV);
-                Animation animation = new RotateAnimation(0.0f,360.0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
-                animation.setDuration(700);
-                animation.setFillEnabled(true);
-                animation.setFillAfter(true);
-                waitTV.startAnimation(animation);
-                animation = new RotateAnimation(0.0f,360.0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
-                animation.setDuration(700);
-                animation.setFillEnabled(true);
-                animation.setFillAfter(true);
-                waitTV.startAnimation(animation);
+                
+                int loops = 1000000;
+                int degreesPerSecond = 360;
+                waitTV.animate().rotationBy(degreesPerSecond * loops).setDuration(loops * 1000)
+                        .setInterpolator(new LinearInterpolator());
 
             }
         });
