@@ -43,20 +43,27 @@ import java.util.Random;
 
 public class MainActivity extends ActionBarActivity {
 
-    private FrameLayout swipeContent;
+    private LinearLayout content;
     private LinearLayout buttonsLayout;
-    private TextView result;
+    private LinearLayout resultLayout;
+
+    private TextView cityResultTV;
+    private TextView countryResultTV;
+    private TextView priceTV;
+    private TextView fromCityTV;
+
     private ImageButton restartButton;
     private ImageButton yesButton;
     private ImageButton noButton;
 
     private ArrayList<Image> list, allImages;
     private ArrayList<String> like, destination;
-    private int position;
-    private String city;
-    private String cityCode;
 
+    private String cityCode;
+    private String cityResult;
+    private String countryResult;
     private String cheapestPrice;
+    private String fromCity;
 
     private AcisionSdk acisionSdk;
     private Messaging messaging;
@@ -85,7 +92,7 @@ public class MainActivity extends ActionBarActivity {
         int roundCount = random.nextInt((10 - 4) + 1) + 5;
         list =  new ArrayList<Image>(subSet.subList(0,roundCount));
 
-        swipeContent = (FrameLayout) findViewById(R.id.tripper_swipe);
+        content = (LinearLayout) findViewById(R.id.tripper_swipe);
 
         buttonsLayout = (LinearLayout) findViewById(R.id.buttons);
 
@@ -106,9 +113,9 @@ public class MainActivity extends ActionBarActivity {
 
                 doSend(query);
 
-                result.setText("wait...");
-                swipeContent.removeView(swipe);
-                swipeContent.addView(result);
+                cityResultTV.setText("wait...");
+                content.removeView(swipe);
+                content.addView(resultLayout);
 
                 buttonsLayout.removeView(yesButton);
                 buttonsLayout.removeView(noButton);
@@ -119,14 +126,13 @@ public class MainActivity extends ActionBarActivity {
         FrameLayout.LayoutParams swipeParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
         swipeParams.gravity = Gravity.CENTER;
         swipe.setLayoutParams(swipeParams);
-        swipeContent.addView(swipe);
+        content.addView(swipe);
 
-        result = new TextView(this);
-        FrameLayout.LayoutParams tvParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-        tvParams.gravity = Gravity.CENTER;
-        result.setLayoutParams(tvParams);
-        result.setTextSize(50);
-        result.setTextColor(getResources().getColor(R.color.lightgray));
+        resultLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.result, null);
+        cityResultTV = (TextView) resultLayout.findViewById(R.id.city);
+        countryResultTV = (TextView) resultLayout.findViewById(R.id.country);
+        priceTV = (TextView) resultLayout.findViewById(R.id.price);
+        fromCityTV = (TextView) resultLayout.findViewById(R.id.from);
 
         restartButton = new ImageButton(this);
         LinearLayout.LayoutParams buttonParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -183,31 +189,35 @@ public class MainActivity extends ActionBarActivity {
 
                 String[] response = data.getContent().split(":");
 
-                String city = response[0];
-                String country = response[1];
+                cityResult = response[0];
+                countryResult = response[1];
                 String countrycode = response[2];
 
                 String currentCityCode = getCityCode();
 
                 CityCodeHelper cityCodeHelper = new CityCodeHelper();
 
-                String destinationCode = cityCodeHelper.findCityCode(city, countrycode, getContext());
+                String destinationCode = cityCodeHelper.findCityCode(cityResult, countrycode, getContext());
 
                 Flightsearch search = new Flightsearch();
                 search.execute(currentCityCode, destinationCode);
 
                 String getmessage = "error";
-                String price = "";
+                cheapestPrice = "";
                 try {
-                    price = search.get();
+                    cheapestPrice = search.get();
                 } catch (Exception e) {
                     System.out.println("error in get");
                 }
 
                 String link = "http://www.skyscanner.com/transport/flights/" + currentCityCode + "/" + destinationCode +"/";
 
-                result.setText(city + ", " + country + " " + price + "$");
-                destination.add(city);
+                cityResultTV.setText(cityResult);
+                countryResultTV.setText(countryResult);
+                priceTV.setText("$" + cheapestPrice);
+                fromCityTV.setText(fromCity);
+
+                destination.add(cityResult);
             }
         });
     }
@@ -249,7 +259,7 @@ public class MainActivity extends ActionBarActivity {
                 address = addresses.get(0).getLocality();
             }
 
-            this.city = address;
+            this.fromCity = address;
 
             CityCodeHelper cityCodeHelper = new CityCodeHelper();
 
@@ -318,6 +328,10 @@ public class MainActivity extends ActionBarActivity {
         swipe.dontLike();
     }
 
+    public void gotToFlight(){
+
+    }
+
     public void restart(){
 
         ArrayList<Image> subSet =  (ArrayList<Image>)allImages.clone();
@@ -328,14 +342,12 @@ public class MainActivity extends ActionBarActivity {
         int roundCount = random.nextInt((10 - 5) + 1) + 5;
         list =  new ArrayList<Image>(subSet.subList(0,roundCount));
 
-        like.clear();
-
         swipe.recycle();
         swipe.loadNewBitmapList(getBitmapList());
         swipe.restart();
 
-        swipeContent.removeView(result);
-        swipeContent.addView(swipe);
+        content.removeView(resultLayout);
+        content.addView(swipe);
 
         buttonsLayout.removeView(restartButton);
         buttonsLayout.addView(noButton);

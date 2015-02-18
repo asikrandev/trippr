@@ -4,14 +4,16 @@
     android:layout_height="match_parent"
     android:background="@color/darkergray">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
+        android:gravity="center"
         android:id="@+id/tripper_swipe">
 
-    </FrameLayout>
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
