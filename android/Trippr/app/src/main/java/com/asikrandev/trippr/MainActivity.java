@@ -153,7 +153,7 @@ public class MainActivity extends ActionBarActivity {
 
                 waitTV.setText("{fa-cog}");
                 Iconify.addIcons(waitTV);
-                
+
                 int loops = 1000000;
                 int degreesPerSecond = 360;
                 waitTV.animate().rotationBy(degreesPerSecond * loops).setDuration(loops * 1000)
