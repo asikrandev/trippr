@@ -3,13 +3,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:background="@color/white">
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:src="@drawable/forge_icon"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:src="@drawable/trippr_logo"
         android:layout_margin="20dp"/>
 
     <EditText
@@ -30,4 +30,10 @@
         android:text="Sign in"
         android:layout_margin="20dp"
         android:onClick="login"/>
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/forge_icon"
+        android:layout_margin="20dp"/>
 </LinearLayout>
