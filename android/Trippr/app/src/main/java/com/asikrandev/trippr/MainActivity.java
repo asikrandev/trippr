@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -317,7 +318,7 @@ public class MainActivity extends ActionBarActivity {
             return code;
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            Log.d("Problem in detecting city", e.getMessage());
         }
 
         return "BER";
