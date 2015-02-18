@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -148,6 +149,13 @@ public class MainActivity extends ActionBarActivity {
                 waitTV.setText("{fa-android}");
                 cityResultTV.setText("{fa-cog}");
                 Iconify.addIcons(cityResultTV);
+                buttonsLayout.removeView(yesButton);
+                buttonsLayout.removeView(noButton);
+                content.removeView(swipe);
+                content.addView(waitLayout);
+
+                waitTV.setText("{fa-cog}");
+                Iconify.addIcons(waitTV);
                 Animation animation = new RotateAnimation(0.0f,360.0f,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);
                 animation.setDuration(700);
                 animation.setFillEnabled(true);
@@ -159,6 +167,7 @@ public class MainActivity extends ActionBarActivity {
                 buttonsLayout.removeView(noButton);
                 content.removeView(swipe);
                 content.addView(waitLayout);
+                waitTV.startAnimation(animation);
 
             }
         });
@@ -320,7 +329,7 @@ public class MainActivity extends ActionBarActivity {
             return code;
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            Log.d("Problem in detecting city", e.getMessage());
         }
 
         return "BER";
