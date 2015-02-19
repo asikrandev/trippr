@@ -2,7 +2,9 @@ package com.asikrandev.trippr;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -42,6 +44,7 @@ import com.asikrandev.trippr.util.SessionWrapper;
 import com.asikrandev.trippr.util.TripprSwipe;
 import com.joanzapata.android.iconify.Iconify;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -92,11 +95,14 @@ public class MainActivity extends ActionBarActivity {
         destination = new ArrayList<String>();
 
         // delete databases created
-        this.deleteDatabase("trippr");
-        // creating new database
-        MySQLiteHelper db = new MySQLiteHelper(this);
+        //this.deleteDatabase(MySQLiteHelper.DATABASE_NAME);
 
-        db.loadDB();
+        File database=getApplicationContext().getDatabasePath(MySQLiteHelper.DATABASE_NAME);
+
+        MySQLiteHelper db = new MySQLiteHelper(this);
+        if (!database.exists()) {
+            db.loadDB();
+        }
 
         // get Images from database
         allImages = db.getAllImages();
@@ -153,7 +159,30 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onLike(int position) {
                 like.add(list.get(position).getTags());
-                
+                yesButton.setBackgroundColor(0xBB33B5E5);
+                yesButton.setEnabled(false);
+                noButton.setEnabled(false);
+            }
+
+            @Override
+            public void onLikeAnimationEnd() {
+                yesButton.setBackgroundResource(R.drawable.button_selector);
+                yesButton.setEnabled(true);
+                noButton.setEnabled(true);
+            }
+
+            @Override
+            public void onDislike() {
+                noButton.setBackgroundColor(0xBB33B5E5);
+                yesButton.setEnabled(false);
+                noButton.setEnabled(false);
+            }
+
+            @Override
+            public void onDislikeAnimationEnd() {
+                noButton.setBackgroundResource(R.drawable.button_selector);
+                yesButton.setEnabled(true);
+                noButton.setEnabled(true);
             }
 
             @Override
@@ -188,24 +217,6 @@ public class MainActivity extends ActionBarActivity {
         swipe.setLayoutParams(swipeParams);
         content.addView(swipe);
     }
-
-
-
-    /*private void start() {
-        AcisionSdkConfiguration config = new AcisionSdkConfiguration("wvatXmaKZcmM", "jegasmlm_gmail_com_0", "3Ph0jsEHe");
-        config.setPersistent(true);
-        config.setApplicationActivity(this);
-        acisionSdk = new AcisionSdk(config, new AcisionSdkCallbacks() {
-            @Override
-            public void onConnected(AcisionSdk acisionSdk) {
-                TextView editMessage = (TextView) findViewById(R.id.text_display);
-                editMessage.setText("Connected");
-                yesButton.setEnabled(true);
-                noButton.setEnabled(true);
-                // Now start the messaging. /
-            }
-        });
-    }*/
 
     public Context getContext() {
         return (Context)this;
@@ -371,8 +382,8 @@ public class MainActivity extends ActionBarActivity {
             Resources res = getResources();
             int resID = res.getIdentifier(list.get(i).getSource(), "drawable", getPackageName());
 
-            /*final BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 8;*/
+            //final BitmapFactory.Options options = new BitmapFactory.Options();
+            //options.inJustDecodeBounds = true;
 
             Bitmap bm = BitmapFactory.decodeResource(getResources(), resID);
 
@@ -432,7 +443,15 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void logout(){
-        Log.d("trippr", "logout");
+
+        swipe.recycle();
+        
+        SharedPreferences session = getSharedPreferences("session", 0);
+        SharedPreferences.Editor editor = session.edit();
+        editor.remove("username");
+        editor.remove("password");
+        editor.commit();
+
         SessionWrapper.acisionSdk = null;
         SessionWrapper.messaging = null;
         Intent intent = new Intent(this, LoginActivity.class);

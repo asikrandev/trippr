@@ -2,8 +2,11 @@ package com.asikrandev.trippr;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,11 +24,12 @@ public class LoginActivity extends Activity {
 
     private TextView status;
 
-    private EditText username;
-    private EditText password;
+    private EditText usernameTV;
+    private EditText passwordTV;
+    private Button signin;
 
-    private AcisionSdk acisionSdk;
-    private Messaging messaging;
+    private String username;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +37,24 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login);
 
         status = (TextView) findViewById(R.id.status);
-        username = (EditText) findViewById(R.id.username);
-        password = (EditText) findViewById(R.id.password);
+        usernameTV = (EditText) findViewById(R.id.username);
+        passwordTV = (EditText) findViewById(R.id.password);
+        signin = (Button) findViewById(R.id.signin);
+
+        SharedPreferences session = getSharedPreferences("session", 0);
+        if(session.contains("username") && session.contains("password")) {
+            Log.d("trippr", "contains");
+            username = session.getString("username", "");
+            password = session.getString("password", "");
+            usernameTV.setText(username);
+            passwordTV.setText(password);
+            status.setVisibility(View.VISIBLE);
+            status.setText("Conecting ...");
+            signin.setEnabled(false);
+            start();
+        }else {
+            Log.d("trippr", "doesnt contains");
+        }
 
     }
 
@@ -42,17 +62,15 @@ public class LoginActivity extends Activity {
         status.setVisibility(View.VISIBLE);
         status.setText("Conecting ...");
 
-        String user;
-        String pass;
+        username = usernameTV.getText().toString();
+        password = passwordTV.getText().toString();
 
-        user = username.getText().toString();
-        pass = password.getText().toString();
-
-        start(user, pass);
+        start();
 
     }
 
-    private void start(String username, String password) {
+    private void start() {
+        signin.setEnabled(false);
         AcisionSdkConfiguration config = new AcisionSdkConfiguration("wvatXmaKZcmM", username, password);
         config.setPersistent(true);
         config.setApplicationActivity(this);
@@ -61,15 +79,25 @@ public class LoginActivity extends Activity {
             public void onConnected(AcisionSdk acisionSdk) {
                 status.setText("Conected");
                 SessionWrapper.messaging = acisionSdk.getMessaging();
+
+                SharedPreferences session = getSharedPreferences("session", 0);
+                SharedPreferences.Editor editor = session.edit();
+                editor.putString("username", username);
+                editor.putString("password", password);
+                editor.commit();
+
                 startSession();
             }
 
             @Override
             public void onAuthenticationFailure(AcisionSdk acisionSdk, AuthenticationFailureData data){
+                signin.setEnabled(true);
                 status.setText("Conection failure, try again");
             }
         });
     }
+
+
 
     public void startSession(){
         Intent intent = new Intent(this, MainActivity.class);

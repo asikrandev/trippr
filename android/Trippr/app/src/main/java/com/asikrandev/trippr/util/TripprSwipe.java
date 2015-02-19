@@ -50,6 +50,9 @@ public class TripprSwipe extends View {
     // Container Activity must implement this interface
     public interface onSwipeListener {
         public void onLike(int position);
+        public void onLikeAnimationEnd();
+        public void onDislike();
+        public void onDislikeAnimationEnd();
         public void onFinished();
     }
 
@@ -262,6 +265,7 @@ public class TripprSwipe extends View {
     public void dontLike(){
         swipeDirection = -1;
         animate(-1);
+        swipeListener.onDislike();
     }
 
     public void like(){
@@ -276,8 +280,13 @@ public class TripprSwipe extends View {
 
         if(op != 0) {
             anim.setDuration( (int) ( ( Math.abs(pos) * -ANIMATION_SPEED / getWidth() ) + ANIMATION_SPEED ) );
+            final int direction = op;
             anim.addListener(new AnimatorListenerAdapter() {
                 public void onAnimationEnd(Animator animation) {
+                    if(direction == 1)
+                        swipeListener.onLikeAnimationEnd();
+                    else
+                        swipeListener.onDislikeAnimationEnd();
                         next();
                         pos = 0;
                         swipeDirection = 0;

@@ -38,6 +38,7 @@
         android:visibility="gone"/>
 
     <Button
+        android:id="@+id/signin"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="Sign in"
