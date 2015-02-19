@@ -10,12 +10,16 @@ import android.widget.TextView;
 import com.acision.acisionsdk.AcisionSdk;
 import com.acision.acisionsdk.AcisionSdkCallbacks;
 import com.acision.acisionsdk.AcisionSdkConfiguration;
+import com.acision.acisionsdk.authentication.AuthenticationFailureData;
 import com.acision.acisionsdk.messaging.Messaging;
+import com.asikrandev.trippr.util.SessionWrapper;
 
 /**
  * Created by JuanM on 18/02/2015.
  */
 public class LoginActivity extends Activity {
+
+    private TextView status;
 
     private EditText username;
     private EditText password;
@@ -28,12 +32,15 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
+        status = (TextView) findViewById(R.id.status);
         username = (EditText) findViewById(R.id.username);
         password = (EditText) findViewById(R.id.password);
 
     }
 
     public void login(View view){
+        status.setVisibility(View.VISIBLE);
+        status.setText("Conecting ...");
 
         String user;
         String pass;
@@ -41,9 +48,7 @@ public class LoginActivity extends Activity {
         user = username.getText().toString();
         pass = password.getText().toString();
 
-        //start(user, pass);
-
-        startSession();
+        start(user, pass);
 
     }
 
@@ -51,15 +56,17 @@ public class LoginActivity extends Activity {
         AcisionSdkConfiguration config = new AcisionSdkConfiguration("wvatXmaKZcmM", username, password);
         config.setPersistent(true);
         config.setApplicationActivity(this);
-        acisionSdk = new AcisionSdk(config, new AcisionSdkCallbacks() {
+        SessionWrapper.acisionSdk = new AcisionSdk(config, new AcisionSdkCallbacks() {
             @Override
             public void onConnected(AcisionSdk acisionSdk) {
+                status.setText("Conected");
+                SessionWrapper.messaging = acisionSdk.getMessaging();
                 startSession();
-                //TextView editMessage = (TextView) findViewById(R.id.text_display);
-                //editMessage.setText("Connected");
-                // Now start the messaging. /
-                //messaging = acisionSdk.getMessaging();
-                //testMessaging(messaging);
+            }
+
+            @Override
+            public void onAuthenticationFailure(AcisionSdk acisionSdk, AuthenticationFailureData data){
+                status.setText("Conection failure, try again");
             }
         });
     }

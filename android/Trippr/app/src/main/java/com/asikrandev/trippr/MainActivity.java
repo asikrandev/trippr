@@ -38,6 +38,7 @@ import com.asikrandev.trippr.util.CityCodeHelper;
 import com.asikrandev.trippr.util.Flightsearch;
 import com.asikrandev.trippr.util.Image;
 import com.asikrandev.trippr.util.MySQLiteHelper;
+import com.asikrandev.trippr.util.SessionWrapper;
 import com.asikrandev.trippr.util.TripprSwipe;
 import com.joanzapata.android.iconify.Iconify;
 
@@ -81,6 +82,8 @@ public class MainActivity extends ActionBarActivity {
     private TripprSwipe swipe;
 
     private void init(){
+
+        testMessaging(SessionWrapper.messaging);
 
         this.cityCode = findCurrentCityCode();
 
@@ -179,7 +182,7 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-    private void start() {
+    /*private void start() {
         AcisionSdkConfiguration config = new AcisionSdkConfiguration("wvatXmaKZcmM", "jegasmlm_gmail_com_0", "3Ph0jsEHe");
         config.setPersistent(true);
         config.setApplicationActivity(this);
@@ -191,11 +194,9 @@ public class MainActivity extends ActionBarActivity {
                 yesButton.setEnabled(true);
                 noButton.setEnabled(true);
                 // Now start the messaging. /
-                messaging = acisionSdk.getMessaging();
-                testMessaging(messaging);
             }
         });
-    }
+    }*/
 
     public Context getContext() {
         return (Context)this;
@@ -279,7 +280,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void doSend(String message) {
-        messaging.sendToDestination("jegasmlm_gmail_com_1", message, new MessagingSendOptions());
+        SessionWrapper.messaging.sendToDestination("jegasmlm_gmail_com_1", message, new MessagingSendOptions());
     }
 
     @Override
@@ -288,8 +289,6 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         init();
-
-        start();
     }
 
     /**
