@@ -62,6 +62,7 @@ public class MainActivity extends ActionBarActivity {
     private TextView priceTV;
     private TextView fromCityTV;
     private TextView waitTV;
+    private TextView logout;
 
     private ImageButton restartButton;
     private ImageButton yesButton;
@@ -112,6 +113,13 @@ public class MainActivity extends ActionBarActivity {
 
         buttonsLayout = (LinearLayout) findViewById(R.id.buttons);
 
+        logout = (TextView) findViewById(R.id.logout);
+        logout.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
         yesButton = (ImageButton) findViewById(R.id.yesButton);
         noButton = (ImageButton) findViewById(R.id.noButton);
 
@@ -145,6 +153,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onLike(int position) {
                 like.add(list.get(position).getTags());
+                
             }
 
             @Override
@@ -420,5 +429,13 @@ public class MainActivity extends ActionBarActivity {
         query = query + "]}";
 
         return query;
+    }
+
+    public void logout(){
+        Log.d("trippr", "logout");
+        SessionWrapper.acisionSdk = null;
+        SessionWrapper.messaging = null;
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 }
