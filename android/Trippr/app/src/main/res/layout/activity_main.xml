@@ -28,18 +28,6 @@
             android:layout_centerVertical="true"
             android:src="@drawable/trippr_tipo_white"/>
 
-        <TextView
-            android:id="@+id/logout"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/button_selector"
-            android:text="log out"/>
-
     </RelativeLayout>
 
      <LinearLayout

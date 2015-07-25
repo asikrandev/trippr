@@ -1,10 +1,9 @@
 package com.asikrandev.trippr;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -13,47 +12,42 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.acision.acisionsdk.AcisionSdk;
-import com.acision.acisionsdk.AcisionSdkCallbacks;
-import com.acision.acisionsdk.AcisionSdkConfiguration;
-import com.acision.acisionsdk.messaging.Messaging;
-import com.acision.acisionsdk.messaging.MessagingReceiveCallbacks;
-import com.acision.acisionsdk.messaging.MessagingReceivedMessage;
-import com.acision.acisionsdk.messaging.MessagingSendOptions;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.asikrandev.trippr.util.CityCodeHelper;
 import com.asikrandev.trippr.util.Flightsearch;
 import com.asikrandev.trippr.util.Image;
 import com.asikrandev.trippr.util.MySQLiteHelper;
-import com.asikrandev.trippr.util.SessionWrapper;
 import com.asikrandev.trippr.util.TripprSwipe;
 import com.joanzapata.android.iconify.Iconify;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     private LinearLayout content;
     private LinearLayout buttonsLayout;
@@ -65,7 +59,6 @@ public class MainActivity extends ActionBarActivity {
     private TextView priceTV;
     private TextView fromCityTV;
     private TextView waitTV;
-    private TextView logout;
 
     private ImageButton restartButton;
     private ImageButton yesButton;
@@ -80,22 +73,13 @@ public class MainActivity extends ActionBarActivity {
     private String cheapestPrice;
     private String fromCity;
 
-    private AcisionSdk acisionSdk;
-    private Messaging messaging;
-
     private TripprSwipe swipe;
 
     private void init(){
-
-        testMessaging(SessionWrapper.messaging);
-
         this.cityCode = findCurrentCityCode();
 
         like = new ArrayList<String>();
         destination = new ArrayList<String>();
-
-        // delete databases created
-        //this.deleteDatabase(MySQLiteHelper.DATABASE_NAME);
 
         File database=getApplicationContext().getDatabasePath(MySQLiteHelper.DATABASE_NAME);
 
@@ -119,13 +103,6 @@ public class MainActivity extends ActionBarActivity {
 
         buttonsLayout = (LinearLayout) findViewById(R.id.buttons);
 
-        logout = (TextView) findViewById(R.id.logout);
-        logout.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                logout();
-            }
-        });
         yesButton = (ImageButton) findViewById(R.id.yesButton);
         noButton = (ImageButton) findViewById(R.id.noButton);
 
@@ -205,9 +182,7 @@ public class MainActivity extends ActionBarActivity {
                 waitTV.animate().rotationBy(degreesPerSecond * loops).setDuration(loops * 10000)
                         .setInterpolator(new LinearInterpolator());
 
-                String query = getQuery();
-
-                doSend(query);
+                requestHttp();
 
             }
         });
@@ -235,72 +210,94 @@ public class MainActivity extends ActionBarActivity {
         return this.fromCity;
     }
 
-    private void testMessaging(Messaging messaging) {
+    public void requestHttp(){
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url ="http://52.25.78.6:80/";
 
-        messaging.setCallbacks(new MessagingReceiveCallbacks() {
-            @Override
-            public void onMessageReceived(Messaging messaging, MessagingReceivedMessage data) {
-
-                String[] response = data.getContent().split(":");
-
-                cityResult = response[0];
-                countryResult = response[1];
-                String countrycode = response[2];
-
-                String currentCityCode = getCityCode();
-                String currentcity = getCityName();
-
-                if (currentCityCode.equals("BER")) {
-                    currentCityCode = "BERL";
-                }
-
-                CityCodeHelper cityCodeHelper = new CityCodeHelper();
-
-                String destinationCode = cityCodeHelper.findCityCode(cityResult, countrycode, getContext());
-
-                Flightsearch search = new Flightsearch();
-                search.execute(currentCityCode, destinationCode);
-
-                String getmessage = "error";
-                cheapestPrice = "";
-                try {
-                    cheapestPrice = search.get();
-                } catch (Exception e) {
-                    System.out.println("error in get");
-                }
-
-                final String link = "http://www.skyscanner.com/transport/flights/" + currentCityCode + "/" + destinationCode +"/";
-
-                ImageView resultImage = (ImageView) resultLayout.findViewById(R.id.result_image);
-                resultImage.setOnClickListener(new View.OnClickListener() {
-
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
                     @Override
-                    public void onClick(View view) {
-                        Uri uri = Uri.parse(link);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intent);
+                    public void onResponse(String httpResponse) {
+                        String[] response = httpResponse.split(":");
+
+                        cityResult = response[0];
+                        countryResult = response[1];
+                        String countrycode = response[2];
+
+                        String currentCityCode = getCurrentCityCode();
+                        CityCodeHelper cityCodeHelper = new CityCodeHelper();
+                        String destinationCode = cityCodeHelper.findCityCode(cityResult, countrycode, getContext());
+                        String cheapestPrice = getCheapestPrice(currentCityCode, destinationCode);
+
+                        setResultView(currentCityCode, destinationCode, cheapestPrice);
                     }
-
-                });
-
-                cityResultTV.setText(cityResult);
-                countryResultTV.setText(countryResult);
-                priceTV.setText("$" + cheapestPrice);
-                fromCityTV.setText(currentCityCode + " - " + destinationCode);
-
-                destination.add(cityResult);
-
-                content.removeView(waitLayout);
-                if(resultLayout.getParent() == null) {
-                    content.addView(resultLayout);
-                    buttonsLayout.addView(restartButton);
-                }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "That didn't work!", Toast.LENGTH_SHORT);
             }
-        });
+        })
+        {
+            protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("text", getStrings(like));
+                params.put("excluded", getStrings(destination));
+                return params;
+            };
+        };
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
-    public void doSend(String message) {
-        SessionWrapper.messaging.sendToDestination("jegasmlm_gmail_com_1", message, new MessagingSendOptions());
+    private String getCheapestPrice(String currentCityCode, String destinationCode) {
+        Flightsearch search = new Flightsearch();
+        search.execute(currentCityCode, destinationCode);
+        String cheapestPrice = "";
+        try {
+            cheapestPrice = search.get();
+        } catch (Exception e) {
+            System.out.println("error in get");
+        }
+        return cheapestPrice;
+    }
+
+    private String getCurrentCityCode() {
+        String currentCityCode = getCityCode();
+
+        if (currentCityCode.equals("BER")) {
+            currentCityCode = "BERL";
+        }
+        return currentCityCode;
+    }
+
+    private void setResultView(String currentCityCode, String destinationCode, String cheapestPrice) {
+        final String link = "http://www.skyscanner.com/transport/flights/" + currentCityCode + "/" + destinationCode +"/";
+        ImageView resultImage = (ImageView) resultLayout.findViewById(R.id.result_image);
+        resultImage.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse(link);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+
+        });
+
+        cityResultTV.setText(cityResult);
+        countryResultTV.setText(countryResult);
+        priceTV.setText("$" + cheapestPrice);
+        fromCityTV.setText(currentCityCode + " - " + destinationCode);
+
+        destination.add(cityResult);
+
+        content.removeView(waitLayout);
+        if(resultLayout.getParent() == null) {
+            content.addView(resultLayout);
+            buttonsLayout.addView(restartButton);
+        }
     }
 
     @Override
@@ -347,7 +344,7 @@ public class MainActivity extends ActionBarActivity {
             return code;
 
         } catch (Exception e) {
-            Log.d("Problem in detecting city", e.getMessage());
+            Log.d("Trippr", e.getMessage());
         }
 
         return "BER";
@@ -382,10 +379,10 @@ public class MainActivity extends ActionBarActivity {
             Resources res = getResources();
             int resID = res.getIdentifier(list.get(i).getSource(), "drawable", getPackageName());
 
-            //final BitmapFactory.Options options = new BitmapFactory.Options();
-            //options.inJustDecodeBounds = true;
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inScaled = false;
 
-            Bitmap bm = BitmapFactory.decodeResource(getResources(), resID);
+            Bitmap bm = BitmapFactory.decodeResource(getResources(), resID, options);
 
             bitmapList.add(bm);
         }
@@ -424,37 +421,13 @@ public class MainActivity extends ActionBarActivity {
         buttonsLayout.addView(yesButton);
     }
 
-    public String getQuery(){
-        String query = "{\"text\":\"";
+    public String getStrings(ArrayList<String> list){
+        String query = "";
         int i;
-        for(i=0; i<like.size(); i++) {
-            query = query + like.get(i) + " ";
+        for(i=0; i< list.size()-1; i++) {
+            query = query + list.get(i) + ",";
         }
-        query = query + "\", \"excluded\":[";
-        if(destination.size()>0){
-            query = query + "\"" + destination.get(0) + "\"";
-        }
-        for(i=1; i<destination.size(); i++) {
-            query = query + ",\"" + destination.get(i) + "\"";
-        }
-        query = query + "]}";
-
+        if(list.size() > 0) query = query + list.get(i);
         return query;
-    }
-
-    public void logout(){
-
-        swipe.recycle();
-        
-        SharedPreferences session = getSharedPreferences("session", 0);
-        SharedPreferences.Editor editor = session.edit();
-        editor.remove("username");
-        editor.remove("password");
-        editor.commit();
-
-        SessionWrapper.acisionSdk = null;
-        SessionWrapper.messaging = null;
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
     }
 }
