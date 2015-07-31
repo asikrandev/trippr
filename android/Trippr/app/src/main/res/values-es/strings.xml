@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Trippr</string>
+    <string name="hello_world">Hola Mundo!</string>
+    <string name="action_settings">Opciones</string>
+    <string name="your_dream_destination_is">Trippr te recomienda:</string>
+</resources>
