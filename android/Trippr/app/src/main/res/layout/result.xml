@@ -7,24 +7,33 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/lightgray"
-        android:textSize="40sp"
+        android:textSize="16sp"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
-        android:text=""/>
+        android:text="@string/your_dream_destination_is"/>
 
     <TextView
-        android:id="@+id/country"
+        android:id="@+id/city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/lightgray"
         android:textSize="20sp"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
-        android:text="" />
+        android:text="City Destination"/>
+
+    <TextView
+        android:id="@+id/country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/lightgray"
+        android:textSize="16sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:text="Country Destination" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -55,17 +64,18 @@
                 android:textColor="@color/white"
                 android:layout_margin="10dp"
                 android:textSize="20sp"
-                android:text="-"/>
+                android:text="MAD - NY"/>
 
             <TextView
                 android:id="@+id/price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:gravity="center"
                 android:textColor="@color/white"
-                android:layout_margin="10dp"
-                android:textSize="50sp"
-                android:text=""/>
+                android:padding="10dp"
+                android:textSize="40sp"
+                android:text="$548.00"/>
 
 
         </LinearLayout>

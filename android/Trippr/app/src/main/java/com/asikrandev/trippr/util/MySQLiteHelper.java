@@ -289,8 +289,6 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
         addImage(new Image(138,"img138","boat beach lake water pure nature alone quiet"));
         addImage(new Image(139,"img139","history city modern new lake bridge lights"));
         addImage(new Image(140,"img140","field trees desert house landscape beautiful farm"));
-
-
     }
 
 }

@@ -21,6 +21,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ import com.joanzapata.android.iconify.Iconify;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -76,7 +78,9 @@ public class MainActivity extends Activity {
     private TripprSwipe swipe;
 
     private void init(){
-        this.cityCode = findCurrentCityCode();
+        cityCode = findCurrentCityCode();
+
+        Calendar time;
 
         like = new ArrayList<String>();
         destination = new ArrayList<String>();
@@ -100,9 +104,7 @@ public class MainActivity extends Activity {
         list =  new ArrayList<Image>(subSet.subList(0,roundCount));
 
         content = (LinearLayout) findViewById(R.id.tripper_swipe);
-
         buttonsLayout = (LinearLayout) findViewById(R.id.buttons);
-
         yesButton = (ImageButton) findViewById(R.id.yesButton);
         noButton = (ImageButton) findViewById(R.id.noButton);
 
@@ -110,11 +112,13 @@ public class MainActivity extends Activity {
         waitTV = (TextView) waitLayout.findViewById(R.id.wait);
         Iconify.addIcons(waitTV);
 
+        time = Calendar.getInstance();
         resultLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.result, null);
         cityResultTV = (TextView) resultLayout.findViewById(R.id.city);
         countryResultTV = (TextView) resultLayout.findViewById(R.id.country);
         priceTV = (TextView) resultLayout.findViewById(R.id.price);
         fromCityTV = (TextView) resultLayout.findViewById(R.id.from);
+        Log.d("Trippr", "time: " + (Calendar.getInstance().getTimeInMillis() - time.getTimeInMillis()));
 
         restartButton = new ImageButton(this);
         LinearLayout.LayoutParams buttonParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -124,13 +128,15 @@ public class MainActivity extends Activity {
         restartButton.setImageResource(R.drawable.restart);
         restartButton.setBackgroundResource(R.drawable.button_selector);
         restartButton.setPadding(10, 10, 10, 10);
-        restartButton.setOnClickListener( new View.OnClickListener() {
+        restartButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 restart();
             }
         });
 
-        swipe = new TripprSwipe(this, getBitmapList(), false);
+        time = Calendar.getInstance();
+        swipe = new TripprSwipe(this, list, false);
+        Log.d("Trippr", "time: " + (Calendar.getInstance().getTimeInMillis() - time.getTimeInMillis()));
         swipe.setFit(true);
         swipe.setOnSwipeListener(new TripprSwipe.onSwipeListener() {
             @Override
@@ -213,7 +219,7 @@ public class MainActivity extends Activity {
     public void requestHttp(){
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://52.25.78.6:80/";
+        String url ="http://104.131.72.2:80/";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -308,6 +314,13 @@ public class MainActivity extends Activity {
         init();
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        this.cityCode = findCurrentCityCode();
+    }
+
     /**
      * Get current city from location info
      */
@@ -339,8 +352,6 @@ public class MainActivity extends Activity {
 
             this.cityCode = code;
             String message = "You are in " + address + ", code is " + code +" ;)";
-            Toast toast = Toast.makeText(this.getApplicationContext(), message, Toast.LENGTH_SHORT);
-            toast.show();
             return code;
 
         } catch (Exception e) {
@@ -409,8 +420,7 @@ public class MainActivity extends Activity {
         int roundCount = random.nextInt((10 - 5) + 1) + 5;
         list =  new ArrayList<Image>(subSet.subList(0,roundCount));
 
-        swipe.recycle();
-        swipe.loadNewBitmapList(getBitmapList());
+        swipe.loadNewBitmapList(list);
         swipe.restart();
 
         content.removeView(resultLayout);
