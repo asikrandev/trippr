@@ -313,11 +313,6 @@ public class TripprSwipe extends View {
             final int direction = op;
             anim.addListener(new Animator.AnimatorListener() {
                 @Override
-                public void onAnimationStart(Animator animation) {
-
-                }
-
-                @Override
                 public void onAnimationEnd(Animator animation) {
                     if (direction == 1)
                         swipeListener.onLikeAnimationEnd();
@@ -334,15 +329,10 @@ public class TripprSwipe extends View {
 //                    next();
                 }
 
-                @Override
-                public void onAnimationCancel(Animator animation) {
+                @Override public void onAnimationStart(Animator animation) {}
+                @Override public void onAnimationCancel(Animator animation) {}
+                @Override public void onAnimationRepeat(Animator animation) {}
 
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-
-                }
             });
             anim.start();
         } else {

@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +22,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.asikrandev.trippr.util.AirportHelper;
 import com.asikrandev.trippr.util.CityCodeHelper;
 import com.asikrandev.trippr.util.Flightsearch;
 import com.asikrandev.trippr.util.Image;
@@ -47,6 +48,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.zip.Inflater;
 
 
 public class MainActivity extends Activity {
@@ -69,23 +71,23 @@ public class MainActivity extends Activity {
     private ArrayList<Image> list, allImages;
     private ArrayList<String> like, destination;
 
-    private String cityCode;
-    private String cityResult;
-    private String countryResult;
+    private String mCurrentCityCode;
+    private String city;
+    private String country;
     private String cheapestPrice;
     private String fromCity;
 
     private TripprSwipe swipe;
 
-    private void init(){
-        cityCode = findCurrentCityCode();
+    private void init() {
+        mCurrentCityCode = findCurrentCityCode();
 
         Calendar time;
 
         like = new ArrayList<String>();
         destination = new ArrayList<String>();
 
-        File database=getApplicationContext().getDatabasePath(MySQLiteHelper.DATABASE_NAME);
+        File database = getApplicationContext().getDatabasePath(MySQLiteHelper.DATABASE_NAME);
 
         MySQLiteHelper db = new MySQLiteHelper(this);
         if (!database.exists()) {
@@ -95,13 +97,13 @@ public class MainActivity extends Activity {
         // get Images from database
         allImages = db.getAllImages();
 
-        ArrayList<Image> subSet =  (ArrayList<Image>)allImages.clone();
+        ArrayList<Image> subSet = (ArrayList<Image>) allImages.clone();
 
         Collections.shuffle(subSet);
 
         Random random = new Random();
         int roundCount = random.nextInt((10 - 4) + 1) + 5;
-        list =  new ArrayList<Image>(subSet.subList(0,roundCount));
+        list = new ArrayList<Image>(subSet.subList(0, roundCount));
 
         content = (LinearLayout) findViewById(R.id.tripper_swipe);
         buttonsLayout = (LinearLayout) findViewById(R.id.buttons);
@@ -120,19 +122,7 @@ public class MainActivity extends Activity {
         fromCityTV = (TextView) resultLayout.findViewById(R.id.from);
         Log.d("Trippr", "time: " + (Calendar.getInstance().getTimeInMillis() - time.getTimeInMillis()));
 
-        restartButton = new ImageButton(this);
-        LinearLayout.LayoutParams buttonParam = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        buttonParam.gravity = Gravity.CENTER_HORIZONTAL;
-        buttonParam.setMargins(2, 2, 2, 2);
-        restartButton.setLayoutParams(buttonParam);
-        restartButton.setImageResource(R.drawable.restart);
-        restartButton.setBackgroundResource(R.drawable.button_selector);
-        restartButton.setPadding(10, 10, 10, 10);
-        restartButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                restart();
-            }
-        });
+        restartButton = (ImageButton) LayoutInflater.from(this).inflate(R.layout.restart_button, buttonsLayout, false);
 
         time = Calendar.getInstance();
         swipe = new TripprSwipe(this, list, false);
@@ -200,15 +190,16 @@ public class MainActivity extends Activity {
     }
 
     public Context getContext() {
-        return (Context)this;
+        return (Context) this;
     }
 
     public String getCityCode() {
-        if (this.cityCode == null) {
+        if (this.mCurrentCityCode == null) {
             return findCurrentCityCode();
         }
-        return this.cityCode;
+        return this.mCurrentCityCode;
     }
+
     public String getCityName() {
         if (this.fromCity == null) {
             return findCurrentCityCode();
@@ -216,42 +207,48 @@ public class MainActivity extends Activity {
         return this.fromCity;
     }
 
-    public void requestHttp(){
+    public void requestHttp() {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://104.131.72.2:80/";
+        String url = "http://104.131.72.2:80/";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String httpResponse) {
-                        String[] response = httpResponse.split(":");
+                        if(httpResponse.equals("")){
+                            setErrorResponseView();
+                        }else {
+                            String[] response = httpResponse.split(":");
 
-                        cityResult = response[0];
-                        countryResult = response[1];
-                        String countrycode = response[2];
+                            city = response[0];
+                            country = response[1];
+                            String countryCode = response[2];
+                            String destinationCode;
+                            if (response.length == 4) {
+                                destinationCode = response[3];
+                            } else {
+                                CityCodeHelper cityCodeHelper = new CityCodeHelper();
+                                destinationCode = cityCodeHelper.findCityCode(city, countryCode, getContext());
+                            }
 
-                        String currentCityCode = getCurrentCityCode();
-                        CityCodeHelper cityCodeHelper = new CityCodeHelper();
-                        String destinationCode = cityCodeHelper.findCityCode(cityResult, countrycode, getContext());
-                        String cheapestPrice = getCheapestPrice(currentCityCode, destinationCode);
-
-                        setResultView(currentCityCode, destinationCode, cheapestPrice);
+                            String cheapestPrice = getCheapestPrice(mCurrentCityCode, destinationCode);
+                            setResultView(destinationCode, cheapestPrice);
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "That didn't work!", Toast.LENGTH_SHORT);
+                setErrorResponseView();
             }
-        })
-        {
+        }) {
             protected Map<String, String> getParams() throws com.android.volley.AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("text", getStrings(like));
                 params.put("excluded", getStrings(destination));
                 return params;
-            };
+            }
         };
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
@@ -269,17 +266,29 @@ public class MainActivity extends Activity {
         return cheapestPrice;
     }
 
-    private String getCurrentCityCode() {
-        String currentCityCode = getCityCode();
+    private void setErrorResponseView() {
+        View errorResponseView = LayoutInflater.from(this).inflate(R.layout.error_response, null);
 
-        if (currentCityCode.equals("BER")) {
-            currentCityCode = "BERL";
-        }
-        return currentCityCode;
+        final String link = "http://www.virgingalactic.com";
+        ImageView resultImage = (ImageView) errorResponseView.findViewById(R.id.result_image);
+        resultImage.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                Uri uri = Uri.parse(link);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            }
+
+        });
+
+        content.removeView(waitLayout);
+        content.addView(errorResponseView);
+        buttonsLayout.addView(restartButton);
     }
 
-    private void setResultView(String currentCityCode, String destinationCode, String cheapestPrice) {
-        final String link = "http://www.skyscanner.com/transport/flights/" + currentCityCode + "/" + destinationCode +"/";
+    private void setResultView(String destinationCode, String cheapestPrice) {
+        final String link = "http://www.skyscanner.com/transport/flights/" + mCurrentCityCode + "/" + destinationCode + "/";
         ImageView resultImage = (ImageView) resultLayout.findViewById(R.id.result_image);
         resultImage.setOnClickListener(new View.OnClickListener() {
 
@@ -292,15 +301,15 @@ public class MainActivity extends Activity {
 
         });
 
-        cityResultTV.setText(cityResult);
-        countryResultTV.setText(countryResult);
+        cityResultTV.setText(city);
+        countryResultTV.setText(country);
         priceTV.setText("$" + cheapestPrice);
-        fromCityTV.setText(currentCityCode + " - " + destinationCode);
+        fromCityTV.setText(mCurrentCityCode + " - " + destinationCode);
 
-        destination.add(cityResult);
+        destination.add(city);
 
         content.removeView(waitLayout);
-        if(resultLayout.getParent() == null) {
+        if (resultLayout.getParent() == null) {
             content.addView(resultLayout);
             buttonsLayout.addView(restartButton);
         }
@@ -318,7 +327,7 @@ public class MainActivity extends Activity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        this.cityCode = findCurrentCityCode();
+        this.mCurrentCityCode = findCurrentCityCode();
     }
 
     /**
@@ -337,22 +346,16 @@ public class MainActivity extends Activity {
         String code = "";
 
         try {
-            List<Address> addresses = gcd.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            String address = "empty";
-            if (addresses.size() > 0) {
-                address = addresses.get(0).getLocality();
+            AirportHelper airportHelper = new AirportHelper();
+            airportHelper.execute(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+            String cityCode = "";
+            try {
+                cityCode = airportHelper.get();
+            } catch (Exception e) {
+                Log.d("Trippr","error in get");
             }
-
-            this.fromCity = address;
-
-            CityCodeHelper cityCodeHelper = new CityCodeHelper();
-
-            String countryCode = addresses.get(0).getCountryCode();
-            code = cityCodeHelper.findCityCode(address, countryCode, this.getApplicationContext());
-
-            this.cityCode = code;
-            String message = "You are in " + address + ", code is " + code +" ;)";
-            return code;
+            Log.d("Trippr", "CityCode:" + cityCode);
+            return cityCode;
 
         } catch (Exception e) {
             Log.d("Trippr", e.getMessage());
@@ -383,10 +386,10 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public ArrayList<Bitmap> getBitmapList(){
+    public ArrayList<Bitmap> getBitmapList() {
         ArrayList<Bitmap> bitmapList = new ArrayList<Bitmap>();
 
-        for(int i = 0; i < list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
             Resources res = getResources();
             int resID = res.getIdentifier(list.get(i).getSource(), "drawable", getPackageName());
 
@@ -402,28 +405,28 @@ public class MainActivity extends Activity {
     }
 
     // Action Buttons
-    public void like(View view){
+    public void like(View view) {
         swipe.like();
     }
 
-    public void dontLike(View view){
+    public void dontLike(View view) {
         swipe.dontLike();
     }
 
-    public void restart(){
+    public void restart(View view) {
 
-        ArrayList<Image> subSet =  (ArrayList<Image>)allImages.clone();
+        ArrayList<Image> subSet = (ArrayList<Image>) allImages.clone();
 
         Collections.shuffle(subSet);
 
         Random random = new Random();
         int roundCount = random.nextInt((10 - 5) + 1) + 5;
-        list =  new ArrayList<Image>(subSet.subList(0,roundCount));
+        list = new ArrayList<Image>(subSet.subList(0, roundCount));
 
         swipe.loadNewBitmapList(list);
         swipe.restart();
 
-        content.removeView(resultLayout);
+        content.removeAllViews();
         content.addView(swipe);
 
         buttonsLayout.removeView(restartButton);
@@ -431,13 +434,13 @@ public class MainActivity extends Activity {
         buttonsLayout.addView(yesButton);
     }
 
-    public String getStrings(ArrayList<String> list){
+    public String getStrings(ArrayList<String> list) {
         String query = "";
         int i;
-        for(i=0; i< list.size()-1; i++) {
+        for (i = 0; i < list.size() - 1; i++) {
             query = query + list.get(i) + ",";
         }
-        if(list.size() > 0) query = query + list.get(i);
+        if (list.size() > 0) query = query + list.get(i);
         return query;
     }
 }

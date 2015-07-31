@@ -5,5 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="your_dream_destination_is">Your dream destination is:</string>
+    <string name="server_error_mesage">Sorry\noyour destination is on another planet\nplease try again</string>
+    <string name="in_another_planet">In another planet</string>
 
 </resources>
