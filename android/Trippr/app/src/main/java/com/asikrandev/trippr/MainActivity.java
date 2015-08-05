@@ -269,19 +269,31 @@ public class MainActivity extends Activity {
                 new Response.Listener< String >() {
                     @Override
                     public void onResponse(String httpResponse) {
-                        cheapestPrice = search.extractData(  httpResponse  );
+                        cheapestPrice = search.extractData( httpResponse );
                         setResultView( destinationCode, cheapestPrice );
                     }
                 },
-                null
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {}
+                }
         );
         queue.add( stringRequest );
     }
 
     private void registerHit() {
         RequestQueue queue = Volley.newRequestQueue( this );
-        String url = "http://104.131.72.2:80/hit/";
-        StringRequest stringRequest = new StringRequest( Request.Method.POST, url, null, null ) {
+        String url = "http://104.131.72.2:80/hit";
+        StringRequest stringRequest = new StringRequest( Request.Method.POST, url,
+                new Response.Listener< String >() {
+                    @Override
+                    public void onResponse(String httpResponse) {}
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {}
+                }
+        ) {
             protected Map< String, String > getParams() throws com.android.volley.AuthFailureError {
                 Map< String, String > params = new HashMap< String, String >();
                 params.put( "text", getStrings( like ) );
