@@ -22,6 +22,7 @@ public class Flightsearch {
                 i++;
                 JSONObject priceList = outdates.getJSONObject(i);
                 prices.add(priceList.getDouble("Price"));
+
             }
 
             return Collections.min(prices).toString();

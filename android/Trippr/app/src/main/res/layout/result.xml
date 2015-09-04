@@ -1,83 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:background="@color/darkgray">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:text="@string/your_dream_destination_is"
-        android:textColor="@color/lightgray"
-        android:textSize="16sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/city"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:text="City Destination"
-        android:textColor="@color/lightgray"
-        android:textSize="20sp" />
+        <RelativeLayout
+            android:layout_marginTop="48dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".3">
 
-    <TextView
-        android:id="@+id/country"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:text="Country Destination"
-        android:textColor="@color/lightgray"
-        android:textSize="16sp" />
+            <RelativeLayout
+                android:id="@+id/destination_result"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:gravity="center">
+                <ImageView
+                    android:id="@+id/destination_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop" />
 
-        <ImageView
-            android:id="@+id/result_image"
-            android:layout_width="300dp"
-            android:layout_height="225dp"
-            android:src="@drawable/flight" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:background="@color/darkergraya"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="300dp"
-            android:layout_height="225dp"
-            android:layout_centerInParent="true"
-            android:background="@color/darkergraya"
-            android:orientation="vertical"
-            android:padding="50dp">
+                    <TextView
+                        android:id="@+id/city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="City Destination"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/from"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="10dp"
-                android:text="MAD - NY"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
+                    <TextView
+                        android:id="@+id/country"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="4dp"
+                        android:text="Country Destination"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <ProgressBar
+                android:id="@+id/destination_progress"
+                android:layout_centerInParent="true"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight=".35">
+
+            <ImageView
+                android:id="@+id/hotel_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/hotel_image" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/darkergraya"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:id="@+id/hotel_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:padding="10dp"
+                        android:text="@string/hotel_room"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"/>
+
+                    <TextView
+                        android:id="@+id/hotel_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:padding="10dp"
+                        android:text="$548.00"
+                        android:textColor="@color/white"
+                        android:textSize="40sp"/>
+
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/hotel_progress"
+                    android:layout_centerInParent="true"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight=".35"
+            android:layout_marginBottom="48dp">
+
+            <ImageView
+                android:id="@+id/result_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/flight" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/darkergraya"
                 android:gravity="center"
-                android:padding="10dp"
-                android:text="$548.00"
-                android:textColor="@color/white"
-                android:textSize="40sp" />
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/from"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="10dp"
+                    android:text="MAD - NY"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="$548.00"
+                    android:textColor="@color/white"
+                    android:textSize="40sp" />
 
-</LinearLayout>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/restart"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_selector"
+        android:onClick="restart"
+        android:src="@drawable/ic_autorenew_black_24dp"
+        android:tint="@color/green" />
+
+</RelativeLayout>

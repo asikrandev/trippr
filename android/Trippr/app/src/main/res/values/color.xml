@@ -17,7 +17,7 @@
 
     <item name="whitea" type="color">#66FFFFFF</item>
     <item name="bluea" type="color">#9933B5E5</item>
-    <item name="darkgraya" type="color">#BB444444</item>
+    <item name="darkgraya" type="color">#88000000</item>
     <item name="darkergraya" type="color">#99222222</item>
     <item name="lightgraya" type="color">#99AAAAAA</item>
 </resources>

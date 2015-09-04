@@ -1,0 +1,142 @@
+[
+  {
+    "ranking": 215,
+    "currency_code": "USD",
+    "max_total_price": "2393.00",
+    "min_price": "191.84",
+    "min_total_price": "1343.00",
+    "max_price": "341.84",
+    "hotel_id": "278389",
+    "available_rooms": 63,
+    "rack_rate": {
+      "currency": "USD",
+      "price": "0.00"
+    }
+  },
+  {
+    "ranking": 214,
+    "currency_code": "USD",
+    "max_total_price": "819.00",
+    "min_price": "80.75",
+    "min_total_price": "565.25",
+    "max_price": "117.00",
+    "hotel_id": "1290273",
+    "available_rooms": 40,
+    "rack_rate": {
+      "currency": "USD",
+      "price": "0.00"
+    }
+  },
+  {
+    "ranking": 213,
+    "currency_code": "USD",
+    "max_total_price": "1111.95",
+    "min_price": "89.35",
+    "min_total_price": "625.45",
+    "max_price": "158.85",
+    "hotel_id": "1065751",
+    "available_rooms": 16,
+    "rack_rate": {
+      "currency": "USD",
+      "price": "0.00"
+    }
+  },
+  {
+    "ranking": 212,
+    "currency_code": "USD",
+    "max_total_price": "3843.00",
+    "min_price": "319.00",
+    "min_total_price": "2233.00",
+    "max_price": "549.00",
+    "hotel_id": "47191",
+    "available_rooms": 76,
+    "rack_rate": {
+      "currency": "USD",
+      "price": "0.00"
+    }
+  },
+  {
+    "ranking": 211,
+    "currency_code": "USD",
+    "max_total_price": "3220.00",
+    "min_price": "231.00",
+    "min_total_price": "1617.00",
+    "max_price": "460.00",
+    "hotel_id": "502335",
+    "available_rooms": 20,
+    "rack_rate": {
+      "currency": "USD",
+      "price": "0.00"
+    }
+  },
+  {
+    "ranking": 210,
+    "currency_code": "USD",
+    "max_total_price": "1184.87",
+    "min_price": "72.57",
+    "min_total_price": "508.01",
+    "max_price": "169.25",
+    "hotel_id": "79344",
+    "available_rooms": 53,
+    "rack_rate": {
+      "currency": "USD",
+      "price": "0.00"
+    }
+  },
+  {
+    "ranking": 209,
+    "currency_code": "USD",
+    "max_total_price": "1418.00",
+    "min_price": "110.30",
+    "min_total_price": "772.10",
+    "max_price": "202.57",
+    "hotel_id": "1129875",
+    "available_rooms": 38,
+    "rack_rate": {
+      "currency": "USD",
+      "price": "0.00"
+    }
+  },
+  {
+    "ranking": 208,
+    "currency_code": "USD",
+    "max_total_price": "1645.00",
+    "min_price": "114.75",
+    "min_total_price": "803.25",
+    "max_price": "235.00",
+    "hotel_id": "79340",
+    "available_rooms": 78,
+    "rack_rate": {
+      "currency": "USD",
+      "price": "0.00"
+    }
+  },
+  {
+    "ranking": 207,
+    "currency_code": "USD",
+    "max_total_price": "1232.00",
+    "min_price": "98.70",
+    "min_total_price": "690.90",
+    "max_price": "176.00",
+    "hotel_id": "332459",
+    "available_rooms": 42,
+    "rack_rate": {
+      "currency": "USD",
+      "price": "0.00"
+    }
+  },
+  {
+    "ranking": 206,
+    "currency_code": "USD",
+    "max_total_price": "4192.90",
+    "min_price": "214.72",
+    "min_total_price": "1503.10",
+    "max_price": "598.96",
+    "hotel_id": "291079",
+    "available_rooms": 20,
+    "rack_rate": {
+      "currency": "USD",
+      "price": "0.00"
+    }
+  }
+]

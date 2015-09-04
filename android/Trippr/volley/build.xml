@@ -11,8 +11,8 @@
          This is the place to change some Ant specific build properties.
          Here are some properties you may want to change/update:
 
-         source.dir
-             The name of the source directory. Default is 'src'.
+         bitmap.dir
+             The name of the bitmap directory. Default is 'src'.
          out.dir
              The name of the output directory. Default is 'bin'.
 

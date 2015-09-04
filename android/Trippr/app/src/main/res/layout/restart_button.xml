@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ImageButton
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/restart"
     android:layout_width="0dp"
     android:layout_height="@dimen/button_height"
     android:layout_weight="1"
-    android:src="@drawable/restart"
+    android:src="@drawable/ic_autorenew_black_24dp"
+    android:tint="@color/green"
     android:background="@drawable/button_selector"
-    android:padding="10dp"
-    android:layout_marginLeft="2dp"
-    android:layout_marginTop="2dp"
-    android:layout_marginRight="1dp"
-    android:layout_marginBottom="2dp"
-    android:enabled="false"
-    android:id="@+id/restart"
     android:onClick="restart"/>
